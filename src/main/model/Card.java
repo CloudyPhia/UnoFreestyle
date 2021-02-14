@@ -32,19 +32,5 @@ public class Card {
         return this.number;
     }
 
-    //setters
-
-    //EFFECTS: returns
-    //public
-
-
-    //CHANGING:
-    // amount of cards in list
-    // cards in the list (cards added/removed)
 
 }
-
-
-//checkCardNumberSame(){}
-// later
-//checkCardColourSame(){}

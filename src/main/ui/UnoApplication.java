@@ -169,23 +169,6 @@ public class UnoApplication {
 
     }
 
-    //EFFECTS: ends the player's turn and goes to the next person.
-  //  public void endTurn() {
-        //do something
-  //  }
-
-    //later create game class in model package, made ui package called UnoApp
-    // scanner stuff from tellerapp
-
-
-
-
-    // have multiple players as specific fields or list of players to keep track
-    //create new player objects (player 1 = new player), maybe only have 2
-    //focus on setting up the game and then havng very basic functionality
-    //card field in game class that's last played card for symbol/colour
-
-
 
 
 }
