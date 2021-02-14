@@ -6,6 +6,7 @@ import java.util.List;
 public class Player {
 
     private ArrayList<Card> playerHand;
+    private String name;
 
     // CONSTANT:
     // each player's list of cards
@@ -20,8 +21,9 @@ public class Player {
 
 
     //EFFECTS: instantiates the player's hand
-    public void playerCards() {
-        playerHand = new ArrayList<>();
+    public Player(String playerName) {
+        this.name = playerName;
+        this.playerHand = new ArrayList<>();
 
         //for (int i = 0; i == 7; i++) {
           //  playerHand.add(i, null);
@@ -35,11 +37,7 @@ public class Player {
     //MODIFIES:
     //EFFECTS:
     public boolean possibleToDiscard() {
-        if (playerHand.size() == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return playerHand.size() != 0;
     }
 
 
@@ -54,11 +52,8 @@ public class Player {
     //MODIFIES: this
     //EFFECTS: removes the selected card from the index
     public void removeCardFromHand(Card card) {
-
-            int cardIndex = getCardIndex(card);
-
-            playerHand.remove(cardIndex);
-
+        int cardIndex = getCardIndex(card);
+        playerHand.remove(cardIndex);
     }
 
     //REQUIRES:
@@ -79,6 +74,10 @@ public class Player {
     //EFFECTS: gets the index of the first instance of a specific card
     public int getCardIndex(Card c) {
         return playerHand.indexOf(c);
+    }
+
+    public String getName(String n) {
+        return this.name;
     }
 
 

@@ -26,7 +26,7 @@ public class PlayerTest {
 
     @BeforeEach
     public void setUpPlayerTest() {
-        testPlayerMultipleSameCards = new Player();
+        testPlayerMultipleSameCards = new Player("Player1");
 
         testCard1 = new Card("Yellow", 0);
         testCard2 = new Card("Red", 1);
@@ -40,7 +40,7 @@ public class PlayerTest {
             testPlayerMultipleSameCards.addCardToHand(testCard1);
         } //this will add 7 of the test card
 
-        testPlayerAllDifferentCards = new Player();
+        testPlayerAllDifferentCards = new Player("Player2");
 
         testPlayerAllDifferentCards.addCardToHand(testCard1);
         testPlayerAllDifferentCards.addCardToHand(testCard2);
@@ -51,7 +51,7 @@ public class PlayerTest {
         testPlayerAllDifferentCards.addCardToHand(testCard7);
 
 
-        testPlayerOneCardLeft = new Player();
+        testPlayerOneCardLeft = new Player("Player3");
 
         testPlayerOneCardLeft.addCardToHand(testCard6);
 
