@@ -26,10 +26,8 @@ Have fun and good luck!
 ##User Stories
 - As a user, I want to be able to add up to four players to a round
 - As a user, I want to start with seven randomized cards in my hand
-- As a user, I want my cards to stay consistent (unless I discard a card) between rounds
 - As a user, I want to be able to draw cards and add them to my hand
 - As a user, I want to be able to discard cards that are of the same
 number/colour as the card previously played
 - As a user, I want to be able to view my list of cards on my turn
-
 
