@@ -7,11 +7,13 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//Tests for Player class
 public class PlayerTest {
 
     private Player testPlayerMultipleSameCards;
     private Player testPlayerAllDifferentCards;
     private Player testPlayerOneCardLeft;
+    private Player testPlayerNoCardsLeft;
 
     private Card testCard1;
     private Card testCard2;
@@ -55,6 +57,8 @@ public class PlayerTest {
 
         testPlayerOneCardLeft.addCardToHand(testCard6);
 
+        testPlayerNoCardsLeft = new Player("Player4");
+
 
     }
 
@@ -67,6 +71,8 @@ public class PlayerTest {
 
     @Test
     public void testPlayerDiscardOneOfMultiple() {
+        assertTrue(testPlayerMultipleSameCards.possibleToDiscard());
+
         testPlayerMultipleSameCards.removeCardFromHand(testCard1);
 
         ArrayList<Card> testPlayerSameCardsHand = testPlayerMultipleSameCards.getPlayerHand();
@@ -77,6 +83,8 @@ public class PlayerTest {
 
     @Test
     public void testPlayerDiscardNoMultiples() {
+        assertTrue(testPlayerAllDifferentCards.possibleToDiscard());
+
         testPlayerAllDifferentCards.removeCardFromHand(testCard3);
 
         ArrayList<Card> testPlayerDifferentCardsHand = testPlayerAllDifferentCards.getPlayerHand();
@@ -88,12 +96,20 @@ public class PlayerTest {
 
     @Test
     public void testPlayerDiscardLastCard() {
+
+        assertTrue(testPlayerOneCardLeft.possibleToDiscard());
+
         testPlayerOneCardLeft.removeCardFromHand(testCard6);
 
         ArrayList<Card> testPlayerOneCardLeftHand = testPlayerOneCardLeft.getPlayerHand();
 
         assertEquals(0, testPlayerOneCardLeftHand.size());
 
+    }
+
+    @Test
+    public void testPlayerNotPossibleToDiscard() {
+        assertFalse(testPlayerNoCardsLeft.possibleToDiscard());
     }
 
 

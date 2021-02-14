@@ -33,3 +33,4 @@ don't want the ability to discard.
 - Multiple player functionality with 2-4 players
 - Only discarding cards that are of the same colour and/or number
 - Specialty Cards (wild, reverse, + 2, etc.)
+- Adding the ability to say "Uno!" when only one card is left

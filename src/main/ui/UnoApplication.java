@@ -6,8 +6,9 @@ import model.Player;
 import java.util.Random;
 import java.util.Scanner;
 
+//Uno card game application
 
-public class Game {
+public class UnoApplication {
 
     private Player player1;
     private Scanner input;
@@ -16,7 +17,7 @@ public class Game {
     protected static int STARTING_CARD_AMOUNT = 7;
 
     //EFFECTS: runs the game application
-    public Game() {
+    public UnoApplication() {
         runGame();
     }
 
@@ -117,7 +118,7 @@ public class Game {
         }
 
         System.out.println(playerName + ", here are your turn options");
-        if (player1.possibleToDiscard() == true) {
+        if (player1.possibleToDiscard()) {
             System.out.println("\tchoose -> choose a card to discard");
         }
 
@@ -149,7 +150,7 @@ public class Game {
     public void drawFromDeck(Player p) {
         Random random = new Random();
 
-        Integer colour = random.nextInt(4);
+        int colour = random.nextInt(4);
         String colourName = "";
 
         if (colour == 0) {

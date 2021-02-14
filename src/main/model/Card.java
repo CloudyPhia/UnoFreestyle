@@ -1,5 +1,7 @@
 package model;
 
+//Represents an uno card with a colour (as a string) and a value (as a number)
+
 public class Card {
     // CONSTANT:
     // card numbers 0-9

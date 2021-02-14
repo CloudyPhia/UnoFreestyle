@@ -3,38 +3,20 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+// Represents a specific named player that is holding a hand of cards
+
 public class Player {
 
     private ArrayList<Card> playerHand;
     private String name;
-
-    // CONSTANT:
-    // each player's list of cards
-
-    //have hand here - list of cards for each
-    // every time create new player object ,each object should have unique
-    // hand and keep information
-
-    // create a field that's list of card
-
-
 
 
     //EFFECTS: instantiates the player's hand
     public Player(String playerName) {
         this.name = playerName;
         this.playerHand = new ArrayList<>();
-
-        //for (int i = 0; i == 7; i++) {
-          //  playerHand.add(i, null);
-            //this is my attempt at just like putting shit here.
-            // Might NOT need this
-
-      //  }
     }
 
-    //REQUIRES:
-    //MODIFIES:
     //EFFECTS: returns true if the size of the hand is greater than 0.
     public boolean possibleToDiscard() {
         return playerHand.size() != 0;
@@ -72,27 +54,11 @@ public class Player {
         return playerHand.indexOf(c);
     }
 
-  //  public String getName() {
-  //       return this.name;
+  //  public void setName(String playerName) {
+  //      this.name = playerName;
   //  }
 
 
 
 
-
-
-
-    // CHANGING:
-    // adding multiple players to the game
-    //
 }
-
-// possibly putting drawCard, discardCard in here. Might centralize it
-// and streamline it more. If I do that, for the game stuff for now i'll
-// just have like p.drawCard(); sout("drew card") and then print the card
-// or some shit? Refer to transcript.java
-
-//REQUIRES:
-//MODIFIES:
-//EFFECTS:
-//public void printCardList()
