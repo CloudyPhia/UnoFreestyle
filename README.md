@@ -24,7 +24,7 @@ deck and will begin the discard pile.
 Have fun and good luck!
 
 ##User Stories
-- As a user, I want to be able to add cards to my hand by drawing.
+- As a user, I want to be able to add cards to my hand by "drawing" a card (picking up a card).
 - As a user, I want to start with seven randomized cards in my hand.
 - As a user, I want to be able to discard specific cards of my choosing. However, if I have no cards left, I 
 don't want the ability to discard. 
