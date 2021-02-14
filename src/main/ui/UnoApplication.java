@@ -59,7 +59,7 @@ public class UnoApplication {
 
     }
 
-    // MODIFIES: this
+    // MODIFIES: this, Player
     // EFFECTS: initializes the player and gives them their starting cards
     private void init() {
         player1 = new Player(playerName);
@@ -131,7 +131,7 @@ public class UnoApplication {
 
 
     //REQUIRES: amount of cards in the player's hand > 0
-    //MODIFIES: Player and this
+    //MODIFIES: Player
     //EFFECTS: discard the first instance of the specified card from the player's hand and
     //         return true. If that card doesn't exist, return false.
     public boolean discardCard(Player p, Card c) {
@@ -145,7 +145,7 @@ public class UnoApplication {
 
     }
 
-    //MODIFIES: Player and this
+    //MODIFIES: Player, this
     //EFFECTS: adds a randomized card to the player's hand.
     public void drawFromDeck(Player p) {
         Random random = new Random();

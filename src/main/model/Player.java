@@ -1,17 +1,17 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 // Represents a specific named player that is holding a hand of cards
 
 public class Player {
 
-    private ArrayList<Card> playerHand;
-    private String name;
+    private final ArrayList<Card> playerHand;
+    private final String name;
 
+    //REQUIRES: playerName has a non-zero length
+    //EFFECTS: instantiates the player's hand and sets the name to playerName.
 
-    //EFFECTS: instantiates the player's hand
     public Player(String playerName) {
         this.name = playerName;
         this.playerHand = new ArrayList<>();
@@ -25,21 +25,23 @@ public class Player {
 
     //REQUIRES: a randomized card
     //MODIFIES: this
-    //EFFECTS: adds the random card to the player's hand (the list of cards)
+    //EFFECTS: adds the random card to the end of the player's hand (the list of cards)
     public void addCardToHand(Card card) {
         playerHand.add(card);
     }
 
     //REQUIRES: card is actually in the list
     //MODIFIES: this
-    //EFFECTS: removes the selected card from the index
+    //EFFECTS: removes the first instance of the selected card from the index
     public void removeCardFromHand(Card card) {
         int cardIndex = getCardIndex(card);
         playerHand.remove(cardIndex);
     }
 
 
-    //getter for the list so that you can still access list from game class
+    //getters
+
+    //EFFECTS: returns the list of cards (the player's Hand)
     public ArrayList<Card> getPlayerHand() {
         return this.playerHand;
     }
@@ -53,12 +55,6 @@ public class Player {
     public int getCardIndex(Card c) {
         return playerHand.indexOf(c);
     }
-
-  //  public void setName(String playerName) {
-  //      this.name = playerName;
-  //  }
-
-
 
 
 }
