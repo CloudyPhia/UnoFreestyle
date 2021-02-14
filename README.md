@@ -23,14 +23,15 @@ deck and will begin the discard pile.
 
 Have fun and good luck!
 
-##User Stories
-- As a user, I want to be able to add cards to my hand by "drawing" a card (picking up a card).
+## User Stories
+- As a user, I want to be able to add cards to my hand by "drawing" a card (picking up a card - 
+adding multiple cards to player).
 - As a user, I want to start with seven randomized cards in my hand.
 - As a user, I want to be able to discard specific cards of my choosing. However, if I have no cards left, I 
 don't want the ability to discard. 
 - As a user, I want to be able to view my list of cards on my turn.
 
-##Future Implementations (coming soon!)
+## Future Implementations (coming soon!)
 - Multiple player functionality with 2-4 players
 - Only discarding cards that are of the same colour and/or number
 - Specialty Cards (wild, reverse, + 2, etc.)
