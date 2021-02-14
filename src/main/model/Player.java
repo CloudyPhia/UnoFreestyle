@@ -35,7 +35,7 @@ public class Player {
 
     //REQUIRES:
     //MODIFIES:
-    //EFFECTS:
+    //EFFECTS: returns true if the size of the hand is greater than 0.
     public boolean possibleToDiscard() {
         return playerHand.size() != 0;
     }
@@ -56,10 +56,6 @@ public class Player {
         playerHand.remove(cardIndex);
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
-    //public void printCardList()
 
     //getter for the list so that you can still access list from game class
     public ArrayList<Card> getPlayerHand() {
@@ -76,9 +72,9 @@ public class Player {
         return playerHand.indexOf(c);
     }
 
-    public String getName(String n) {
-        return this.name;
-    }
+  //  public String getName() {
+  //       return this.name;
+  //  }
 
 
 
@@ -95,3 +91,8 @@ public class Player {
 // and streamline it more. If I do that, for the game stuff for now i'll
 // just have like p.drawCard(); sout("drew card") and then print the card
 // or some shit? Refer to transcript.java
+
+//REQUIRES:
+//MODIFIES:
+//EFFECTS:
+//public void printCardList()

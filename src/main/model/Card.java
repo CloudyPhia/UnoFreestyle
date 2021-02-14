@@ -43,14 +43,6 @@ public class Card {
 }
 
 
-
-// public discardCard(){}
-
-// public discardPile(){} do this later (not now) ~ automatically go through based on last card, only give options
-// that fit, or say "not any options that are eligible and make you draw"
-
-// public drawFromDeck(){}
-
 //checkCardNumberSame(){}
 // later
 //checkCardColourSame(){}
