@@ -29,6 +29,9 @@ adding multiple cards to player).
 - As a user, I want to be able to discard specific cards of my choosing. However, if I have no cards left, I 
 don't want the ability to discard. 
 - As a user, I want to be able to view my list of cards on my turn.
+- As a user, I want to be able to save my game's progress to file
+- As a user, I want to be able to (and presented with the option to) load my past 
+game from file
 
 ## Future Implementations (coming soon!)
 - Multiple player functionality with 2-4 players
