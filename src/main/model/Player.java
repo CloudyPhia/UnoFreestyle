@@ -7,13 +7,13 @@ import java.util.ArrayList;
 public class Player {
 
     private final ArrayList<Card> playerHand;
-    private final String name;
+    protected String playerName;
 
     //REQUIRES: playerName has a non-zero length
     //EFFECTS: instantiates the player's hand and sets the name to playerName.
 
     public Player(String playerName) {
-        this.name = playerName;
+        this.playerName = playerName;
         this.playerHand = new ArrayList<>();
     }
 
@@ -21,6 +21,10 @@ public class Player {
     public boolean possibleToDiscard() {
         return playerHand.size() != 0;
     }
+
+
+
+
 
 
     //REQUIRES: a randomized card
@@ -36,6 +40,11 @@ public class Player {
     public void removeCardFromHand(Card card) {
         int cardIndex = getCardIndex(card);
         playerHand.remove(cardIndex);
+    }
+
+    //setters
+    public void setName(String playerName) {
+        this.playerName = playerName;
     }
 
 
@@ -56,5 +65,7 @@ public class Player {
         return playerHand.indexOf(c);
     }
 
-
+    public String getName() {
+        return this.playerName;
+    }
 }
