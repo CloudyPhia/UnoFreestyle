@@ -1,13 +1,22 @@
 package ui;
 
 import model.Card;
+import model.GameState;
 import model.Player;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 //Uno card game application
+
+//USED FROM: [REPOSITORY THING[
 
 //have an integer that's keeping track of whos turn it is - what point in time you'll switch turn
 //switch statement (look it up!) :D , use break at the end of cases
@@ -23,16 +32,28 @@ public class UnoApplication {
 
     private Player currentPlayer;
 
+    private static final String JSON_STORE = "./data/gamestate.json";
     private Scanner input;
+    private GameState gameState;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     private int playerTurn;
     private int amountOfPlayers = 2;
     private Boolean liveGame = false;
+    private Boolean setUpRun = true;
+    private Boolean endScreen = false;
+    private Boolean failure = false;
+    private Boolean newGame = false;
 
     protected static int STARTING_CARD_AMOUNT = 7;
 
     //EFFECTS: runs the game application
-    public UnoApplication() {
+    public UnoApplication() throws FileNotFoundException {
+        input = new Scanner(System.in);
+        gameState = new GameState("Saved Game");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runGame();
     }
 
@@ -43,17 +64,16 @@ public class UnoApplication {
         boolean keepGoing = true;
         String command = null;
 
-        playerList = new ArrayList<>();
-        player1 = new Player("NameNotInitialized");
-        player2 = new Player("NameNotInitialized2");
-       // player3 = new Player("NameNotInitialized3");
-       // player4 = new Player("NameNotInitialized4;");
+        playerSetUp();
 
-        init();
-
-        askForEachPlayerName();
+        askPlayerAboutLoadingOldGame();
 
         resetPlayerTurns();
+
+        if (failure) {
+            keepGoing = false;
+            exit(69);
+        }
 
         liveGame = true;
 
@@ -70,10 +90,57 @@ public class UnoApplication {
 
         }
 
-        System.out.println("\nThanks For Playing!");
-        liveGame = false;
+        askToSave();
+
+        endGameMessage();
 
     }
+
+    //EFFECTS: loads the initial menu that asks about loading an old game
+    private void askPlayerAboutLoadingOldGame() {
+        String command = null;
+
+        while (setUpRun) {
+            initialLoadMenu();
+            command = input.next();
+            command = command.toLowerCase();
+            processStartupCommand(command);
+
+        }
+
+    }
+
+    //EFFECTS: displays the initial load menu
+    private void initialLoadMenu() {
+        System.out.println("Hello! Welcome to Online Uno!");
+        System.out.println("\tload -> load your previous saved game!");
+        System.out.println("\tnew -> start a new game!");
+
+    }
+
+    //EFFECTS: processes user commands in the startup menu.
+    private void processStartupCommand(String command) {
+        if (command.equals("load")) {
+            setUpRun = false;
+            loadGameState();
+        } else if (command.equals("new")) {
+            setUpRun = false;
+            init();
+            askForEachPlayerName();
+        } else {
+            System.out.println("That selection is not valid. Please try again.");
+        }
+    }
+
+    //EFFECTS: sets up the players and initializes the new list
+    private void playerSetUp() {
+        playerList = new ArrayList<>();
+        player1 = new Player("NameNotInitialized");
+        player2 = new Player("NameNotInitialized2");
+        // player3 = new Player("NameNotInitialized3");
+        // player4 = new Player("NameNotInitialized4;");
+    }
+
 
     // MODIFIES: this, Player
     // EFFECTS: initializes the player and gives them their starting cards
@@ -86,20 +153,13 @@ public class UnoApplication {
 
         resetPlayerTurns();
 
-        getCurrentPlayer();
-
-        for (int i = 0; i < amountOfPlayers; i++) {
-            dealCards();
-
-            if (playerTurn < amountOfPlayers - 1) {
-                this.playerTurn++;
-            }
+        while (playerTurn < amountOfPlayers) {
             getCurrentPlayer();
+            dealCards();
+            this.playerTurn++;
         }
 
         resetPlayerTurns();
-
-        input = new Scanner(System.in);
     }
 
     //EFFECTS: deals the player STARTING_CARD_AMOUNT of cards
@@ -114,14 +174,11 @@ public class UnoApplication {
     //EFFECTS: individually asks each player for their name
     private void askForEachPlayerName() {
         resetPlayerTurns();
-        for (int i = 0; i < amountOfPlayers; i++) {
 
-            askForName();
-
-            if (playerTurn < amountOfPlayers - 1) {
-                this.playerTurn++;
-            }
+        while (playerTurn < amountOfPlayers) {
             getCurrentPlayer();
+            askForName();
+            this.playerTurn++;
         }
     }
 
@@ -142,7 +199,7 @@ public class UnoApplication {
 
 
     // MODIFIES: this
-    // EFFECTS: processes user command
+    // EFFECTS: processes user command in game
     private void processCommand(String command) {
 
         getCurrentPlayer();
@@ -168,7 +225,7 @@ public class UnoApplication {
     }
 
 
-
+    // REQUIRES: number be typed into console
     // MODIFIES: this
     // EFFECTS: removes a card from the player's list of cards based on which card index they select
     private void selectCard() {
@@ -254,9 +311,9 @@ public class UnoApplication {
         if (liveGame) {
             System.out.println(currentPlayer.getName() + ", you drew a " + card.getColour() + " " + card.getNumber()
                     + "!");
-        }
 
-        nextPlayer();
+            nextPlayer();
+        }
 
     }
 
@@ -269,6 +326,95 @@ public class UnoApplication {
     private void getCurrentPlayer() {
         currentPlayer = playerList.get(playerTurn);
     }
+
+    //EFFECTS: sends out "Thanks for playing" and sets liveGame to false.
+    private void endGameMessage() {
+        System.out.println("\nThanks For Playing!");
+        liveGame = false;
+    }
+
+
+    //EFFECTS: asks the player if they'd like to save their game.
+    private void askToSave() {
+        endScreen = true;
+        String endCommand = null;
+        while (endScreen) {
+            endMenu();
+            endCommand = input.next();
+            endCommand = endCommand.toLowerCase();
+
+//            if (endCommand.equals("save")) {
+//                System.out.println("Saving game...");
+//                saveGameState();
+//                endScreen = false;
+//            } else if (endCommand.equals("finish")) {
+//                System.out.println("Ending game...");
+//                endScreen = false;
+//            } else {
+            processEndCommand(endCommand);
+//            }
+        }
+    }
+
+    //EFFECTS: displays the end menu.
+    private void endMenu() {
+        System.out.println("Currently ending the game. Would you like to save?");
+
+        System.out.println("\tsave -> save game and exit");
+        System.out.println("\tfinish -> end the game without saving");
+
+    }
+
+    //EFFECTS: processes user commmand in the end menu.
+    private void processEndCommand(String endCommand) {
+        while (endScreen) {
+            if (endCommand.equals("save")) {
+                System.out.println("Saving game...");
+                saveGameState();
+                endScreen = false;
+            } else if (endCommand.equals("finish")) {
+                System.out.println("Ending game...");
+                endScreen = false;
+            } else {
+                System.out.println("That selection is not valid. Please try again.");
+            }
+        }
+    }
+
+
+    //EFFECTS: saves the workroom to file
+    private void saveGameState() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(gameState);
+            jsonWriter.close();
+            System.out.println("Saved " + gameState.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: loads workroom from file
+    private void loadGameState() {
+        try {
+            gameState = jsonReader.read();
+            System.out.println("Loaded " + gameState.getName() + " from " + JSON_STORE);
+
+            for (int i = 0; i < gameState.getCurrentPlayers().size(); i++) {
+                playerList.add(gameState.getCurrentPlayers().get(i));
+            }
+
+
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+            System.out.println("Please reload and start a new game.");
+            failure = true;
+        }
+
+    }
+
+
 
 
 }

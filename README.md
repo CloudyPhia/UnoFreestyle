@@ -38,3 +38,6 @@ game from file
 - Only discarding cards that are of the same colour and/or number
 - Specialty Cards (wild, reverse, + 2, etc.)
 - Adding the ability to say "Uno!" when only one card is left
+
+## CITATIONS:
+- 

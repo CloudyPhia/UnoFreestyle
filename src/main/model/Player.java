@@ -1,10 +1,13 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writeable;
+
 import java.util.ArrayList;
 
 // Represents a specific named player that is holding a hand of cards
 
-public class Player {
+public class Player implements Writeable {
 
     private final ArrayList<Card> playerHand;
     protected String playerName;
@@ -23,10 +26,6 @@ public class Player {
     }
 
 
-
-
-
-
     //REQUIRES: a randomized card
     //MODIFIES: this
     //EFFECTS: adds the random card to the end of the player's hand (the list of cards)
@@ -41,6 +40,15 @@ public class Player {
         int cardIndex = getCardIndex(card);
         playerHand.remove(cardIndex);
     }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", playerName);
+       // json.put("cards", getPlayerHand());
+        return json;
+    }
+
 
     //setters
     public void setName(String playerName) {
