@@ -45,7 +45,10 @@ public class Player implements Writeable {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", playerName);
-       // json.put("cards", getPlayerHand());
+        for (Card card : playerHand) {
+            json.put("colour", card.getColour());
+            json.put("number", card.getNumber());
+        }
         return json;
     }
 

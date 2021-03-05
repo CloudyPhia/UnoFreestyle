@@ -1,5 +1,6 @@
 package persistence;
 
+import model.Card;
 import model.GameState;
 import model.Player;
 import org.json.JSONArray;
@@ -52,8 +53,8 @@ public class JsonReader {
     private void addCurrentPlayers(GameState gs, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("currentPlayers");
         for (Object json : jsonArray) {
-            JSONObject nextThingy = (JSONObject) json;
-            addPlayer(gs, nextThingy);
+            JSONObject nextPlayer = (JSONObject) json;
+            addPlayer(gs, nextPlayer);
         }
 
     }
@@ -62,6 +63,9 @@ public class JsonReader {
     // EFFECTS: parses thingy from JSON object and adds it to workroom
     private void addPlayer(GameState gs, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
+       // String card = jsonObject.getString("card");
+      //  String number = jsonObject.getString("number");
+      //  Card cards = Card.valueof(jsonObject.getString("cards"));
         Player player = new Player(name);
         gs.addPlayer(player);
     }

@@ -66,7 +66,7 @@ public class UnoApplication {
 
         playerSetUp();
 
-        askPlayerAboutLoadingOldGame();
+        // askPlayerAboutLoadingOldGame();
 
         resetPlayerTurns();
 
@@ -122,9 +122,11 @@ public class UnoApplication {
     private void processStartupCommand(String command) {
         if (command.equals("load")) {
             setUpRun = false;
+            newGame = false;
             loadGameState();
         } else if (command.equals("new")) {
             setUpRun = false;
+            newGame = true;
             init();
             askForEachPlayerName();
         } else {
@@ -135,16 +137,25 @@ public class UnoApplication {
     //EFFECTS: sets up the players and initializes the new list
     private void playerSetUp() {
         playerList = new ArrayList<>();
-        player1 = new Player("NameNotInitialized");
-        player2 = new Player("NameNotInitialized2");
-        // player3 = new Player("NameNotInitialized3");
-        // player4 = new Player("NameNotInitialized4;");
+
+        askPlayerAboutLoadingOldGame();
+
+       // if (newGame) {
+//
+//            player1 = new Player("NameNotInitialized");
+//            player2 = new Player("NameNotInitialized2");
+            // player3 = new Player("NameNotInitialized3");
+            // player4 = new Player("NameNotInitialized4;");
+      //  }
     }
 
 
     // MODIFIES: this, Player
     // EFFECTS: initializes the player and gives them their starting cards
     private void init() {
+
+        player1 = new Player("NameNotInitialized");
+        player2 = new Player("NameNotInitialized2");
 
         playerList.add(player1);
         playerList.add(player2);
@@ -343,16 +354,7 @@ public class UnoApplication {
             endCommand = input.next();
             endCommand = endCommand.toLowerCase();
 
-//            if (endCommand.equals("save")) {
-//                System.out.println("Saving game...");
-//                saveGameState();
-//                endScreen = false;
-//            } else if (endCommand.equals("finish")) {
-//                System.out.println("Ending game...");
-//                endScreen = false;
-//            } else {
             processEndCommand(endCommand);
-//            }
         }
     }
 
@@ -401,9 +403,16 @@ public class UnoApplication {
             gameState = jsonReader.read();
             System.out.println("Loaded " + gameState.getName() + " from " + JSON_STORE);
 
-            for (int i = 0; i < gameState.getCurrentPlayers().size(); i++) {
-                playerList.add(gameState.getCurrentPlayers().get(i));
-            }
+//            for (int i = 0; i < gameState.getCurrentPlayers().size(); i++) {
+//                playerList.add(gameState.getCurrentPlayers().get(i));
+//            }
+
+
+            player1 = gameState.getCurrentPlayers().get(0);
+            player2 = gameState.getCurrentPlayers().get(1);
+
+            playerList.add(player1);
+            playerList.add(player2);
 
 
         } catch (IOException e) {
