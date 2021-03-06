@@ -58,20 +58,18 @@ public class UnoApplication {
 
 
     //MODIFIES: this
-    //EFFECTS: processes user input
+    //EFFECTS: processes user input. If the gamestate doesn't load properly, the game ends immediately.
     private void runGame() {
         boolean keepGoing = true;
         String command = null;
 
         playerSetUp();
 
-        // askPlayerAboutLoadingOldGame();
-
         resetPlayerTurns();
 
         if (failure) {
             keepGoing = false;
-            exit(69);
+            exit(1);
         }
 
         liveGame = true;
@@ -392,10 +390,17 @@ public class UnoApplication {
     }
 
     //MODIFIES: this
-    //EFFECTS: loads gamestate from file
+    //EFFECTS: loads gamestate from file. If there were no players saved to the file, the game quits and asks the player
+    //         to load the game again.
     private void loadGameState() {
         try {
             gameState = jsonReader.read();
+
+            if (gameState.numCurrentPlayers() <= 1) {
+                System.out.println("No previous game saved to the file. Please reload and start a new game.");
+                exit(2);
+            }
+
             System.out.println("Loaded " + gameState.getName() + " from " + JSON_STORE);
 
             for (Player p: gameState.getCurrentPlayers()) {
