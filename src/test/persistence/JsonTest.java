@@ -105,7 +105,7 @@ public class JsonTest {
             assertEquals("My game state", gs.getName());
 
             List<Player> currentPlayers = gs.getCurrentPlayers();
-            assertEquals(2, currentPlayers.size());
+            assertEquals(2, gs.numCurrentPlayers());
 
             assertEquals(player1.getPlayerHandSize(), 7);
             assertEquals(player2.getPlayerHandSize(), 7);
