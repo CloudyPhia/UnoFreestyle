@@ -7,12 +7,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 //Tests for both the JsonReader and JsonWriter class (as they both rely on each other)
-//also partially tests the GameState class.
+//also inherently tests the GameState class.
 
 /*
  * CITATION: JsonReaderTest and JsonWriterTest code obtained (and modified) from JsonSerializationDemo
@@ -31,6 +32,8 @@ public class JsonTest {
     public GameState gs;
     public Player player1;
     public Player player2;
+    public Player player3;
+    public Player player4;
     public Card testCard;
 
     @BeforeEach
@@ -41,6 +44,9 @@ public class JsonTest {
 
          player1 = new Player("tester1");
          player2 = new Player("tester2");
+         player3 = new Player("tester3");
+         player4 = new Player("tester4");
+
          testCard = new Card("Yellow", 0);
 
     }
@@ -97,7 +103,10 @@ public class JsonTest {
 
             gs = reader.read();
             assertEquals("My game state", gs.getName());
-            assertEquals(2, gs.numCurrentPlayers());
+
+            List<Player> currentPlayers = gs.getCurrentPlayers();
+            assertEquals(2, currentPlayers.size());
+
             assertEquals(player1.getPlayerHandSize(), 7);
             assertEquals(player2.getPlayerHandSize(), 7);
 
@@ -126,7 +135,10 @@ public class JsonTest {
 
             gs = reader.read();
             assertEquals("My game state", gs.getName());
-            assertEquals(2, gs.numCurrentPlayers());
+
+            List<Player> currentPlayers = gs.getCurrentPlayers();
+            assertEquals(2, currentPlayers.size());
+
             assertEquals(player1.getPlayerHandSize(), 18);
             assertEquals(player2.getPlayerHandSize(), 3);
 
@@ -154,7 +166,10 @@ public class JsonTest {
 
             gs = reader.read();
             assertEquals("My game state", gs.getName());
-            assertEquals(2, gs.numCurrentPlayers());
+
+            List<Player> currentPlayers = gs.getCurrentPlayers();
+            assertEquals(2, currentPlayers.size());
+
             assertEquals(player1.getPlayerHandSize(), 1);
             assertEquals(player2.getPlayerHandSize(), 1);
 
@@ -179,9 +194,89 @@ public class JsonTest {
 
             gs = reader.read();
             assertEquals("My game state", gs.getName());
-            assertEquals(2, gs.numCurrentPlayers());
+
+            List<Player> currentPlayers = gs.getCurrentPlayers();
+            assertEquals(2, currentPlayers.size());
+
             assertEquals(player1.getPlayerHandSize(), 0);
             assertEquals(player2.getPlayerHandSize(), 3);
+
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+    }
+
+    @Test
+    public void testThreePlayers() {
+        for (int in = 0; in < 1; in++) {
+            player1.addCardToHand(testCard);
+        }
+        for (int in = 0; in < 5; in++) {
+            player2.addCardToHand(testCard);
+        }
+        for (int in = 0; in < 8; in++) {
+            player3.addCardToHand(testCard);
+        }
+
+        gs.addPlayer(player1);
+        gs.addPlayer(player2);
+        gs.addPlayer(player3);
+
+        try {
+            writer.open();
+            writer.write(gs);
+            writer.close();
+
+            gs = reader.read();
+            assertEquals("My game state", gs.getName());
+
+            List<Player> currentPlayers = gs.getCurrentPlayers();
+            assertEquals(3, currentPlayers.size());
+
+            assertEquals(player1.getPlayerHandSize(), 1);
+            assertEquals(player2.getPlayerHandSize(), 5);
+            assertEquals(player3.getPlayerHandSize(), 8);
+
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+    }
+
+    @Test
+    public void testFourPlayers() {
+        for (int in = 0; in < 7; in++) {
+            player1.addCardToHand(testCard);
+        }
+        for (int in = 0; in < 6; in++) {
+            player2.addCardToHand(testCard);
+        }
+        for (int in = 0; in < 5; in++) {
+            player3.addCardToHand(testCard);
+        }
+        for (int in = 0; in < 4; in++) {
+            player4.addCardToHand(testCard);
+        }
+
+        gs.addPlayer(player1);
+        gs.addPlayer(player2);
+        gs.addPlayer(player3);
+        gs.addPlayer(player4);
+
+        try {
+            writer.open();
+            writer.write(gs);
+            writer.close();
+
+            gs = reader.read();
+            assertEquals("My game state", gs.getName());
+
+            List<Player> currentPlayers = gs.getCurrentPlayers();
+            assertEquals(4, currentPlayers.size());
+
+            assertEquals(player1.getPlayerHandSize(), 7);
+            assertEquals(player2.getPlayerHandSize(), 6);
+            assertEquals(player3.getPlayerHandSize(), 5);
+            assertEquals(player4.getPlayerHandSize(), 4);
 
         } catch (IOException e) {
             fail("Exception should not have been thrown");

@@ -63,6 +63,12 @@ public class PlayerTest {
     }
 
     @Test
+    public void testPlayerSetName() {
+        testPlayerOneCardLeft.setName("New Name");
+        assertEquals("New Name", testPlayerOneCardLeft.getName());
+    }
+
+    @Test
     public void testPlayerHasSevenCardsAtStart() {
         //test the player has STARTING_CARD_AMOUNT cards at the start
         assertEquals(STARTING_CARD_AMOUNT, testPlayerMultipleSameCards.getPlayerHandSize());

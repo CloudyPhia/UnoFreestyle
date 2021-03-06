@@ -21,7 +21,7 @@ public class Card implements Writeable {
 
 
     //REQUIRES: string to be one of "Red" "Blue" "Yellow" "Green" and int to be 0 <= n <= 9
-    //MODIFIES:
+    //MODIFIES: this
     //EFFECTS: instantiates a card with colour c and value n
     public Card(String c, int n) {
         colour = c;

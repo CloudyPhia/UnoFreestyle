@@ -39,7 +39,6 @@ public class UnoApplication {
     private JsonReader jsonReader;
 
     private int playerTurn;
-    private int amountOfPlayers = 2;
     private Boolean liveGame = false;
     private Boolean setUpRun = true;
     private Boolean endScreen = false;
@@ -157,7 +156,7 @@ public class UnoApplication {
 
         resetPlayerTurns();
 
-        while (playerTurn < amountOfPlayers) {
+        while (playerTurn < playerList.size()) {
             getCurrentPlayer();
             dealCards();
             this.playerTurn++;
@@ -179,7 +178,7 @@ public class UnoApplication {
     private void askForEachPlayerName() {
         resetPlayerTurns();
 
-        while (playerTurn < amountOfPlayers) {
+        while (playerTurn < playerList.size()) {
             getCurrentPlayer();
             askForName();
             this.playerTurn++;
@@ -253,7 +252,7 @@ public class UnoApplication {
     }
 
 
-    //EFFECTS: displays the options menu to the user.
+    //EFFECTS: displays the in-game options menu to the current player.
     private void displayMenu() {
 
         getCurrentPlayer();
@@ -362,23 +361,21 @@ public class UnoApplication {
 
     //EFFECTS: processes user command in the end menu.
     private void processEndCommand(String endCommand) {
-        while (endScreen) {
-            if (endCommand.equals("save")) {
-                System.out.println("Saving game...");
-                saveGameState();
-                endScreen = false;
-            } else if (endCommand.equals("finish")) {
-                System.out.println("Ending game...");
-                endScreen = false;
-            } else {
-                System.out.println("That selection is not valid. Please try again.");
-            }
+        if (endCommand.equals("save")) {
+            System.out.println("Saving game...");
+            saveGameState();
+            endScreen = false;
+        } else if (endCommand.equals("finish")) {
+            System.out.println("Ending game...");
+            endScreen = false;
+        } else {
+            System.out.println("That selection is not valid. Please try again.");
         }
     }
 
 
     //MODIFIES: gameState
-    //EFFECTS: saves the workroom to file
+    //EFFECTS: saves the gamestate to file
     private void saveGameState() {
         try {
             for (Player p: playerList) {
@@ -395,19 +392,15 @@ public class UnoApplication {
     }
 
     //MODIFIES: this
-    //EFFECTS: loads workroom from file
+    //EFFECTS: loads gamestate from file
     private void loadGameState() {
         try {
             gameState = jsonReader.read();
             System.out.println("Loaded " + gameState.getName() + " from " + JSON_STORE);
 
-
-
-            player1 = gameState.getCurrentPlayers().get(0);
-            player2 = gameState.getCurrentPlayers().get(1);
-
-            playerList.add(player1);
-            playerList.add(player2);
+            for (Player p: gameState.getCurrentPlayers()) {
+                playerList.add(p);
+            }
 
 
         } catch (IOException e) {

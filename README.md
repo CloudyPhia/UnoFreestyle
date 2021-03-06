@@ -29,15 +29,13 @@ adding multiple cards to player).
 - As a user, I want to be able to discard specific cards of my choosing. However, if I have no cards left, I 
 don't want the ability to discard. 
 - As a user, I want to be able to view my list of cards on my turn.
-- As a user, I want to be able to save my game's progress to file
-- As a user, I want to be able to (and presented with the option to) load my past 
-game from file
+- As a user, I want to be able to save my game's progress to file before ending my game (e.g. what players 
+I'm playing with and what cards they currently have in their hand)
+- As a user, I want to be presented with the option to load a past game before beginning a new game.
+- As a user, I want to be able to load a past game (e.g. the players I played with as well as their cards)
 
 ## Future Implementations (coming soon!)
-- Multiple player functionality with 2-4 players
+- Player amount selection (ability to choose between 2-4 players)
 - Only discarding cards that are of the same colour and/or number
 - Specialty Cards (wild, reverse, + 2, etc.)
-- Adding the ability to say "Uno!" when only one card is left
-
-## CITATIONS:
-- 
+- Adding the ability to say "Uno!" when only one card remains
