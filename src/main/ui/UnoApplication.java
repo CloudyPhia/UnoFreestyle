@@ -27,8 +27,8 @@ public class UnoApplication {
     private ArrayList<Player> playerList;
     private Player player1;
     private Player player2;
-    private Player player3; //for future use
-    private Player player4; //for future use
+    //private Player player3; for future use
+    //private Player player4; for future use
 
     private Player currentPlayer;
 
