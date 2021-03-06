@@ -40,7 +40,7 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses workroom from JSON object and returns it
+    // EFFECTS: parses gamestate from JSON object and returns it
     private GameState parseGameState(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         GameState gs = new GameState(name);
@@ -48,10 +48,11 @@ public class JsonReader {
         return gs;
     }
 
-    // MODIFIES: wr
-    // EFFECTS: parses currentPlayers from JSON object and adds them to workroom
+    // MODIFIES: gs
+    // EFFECTS: parses currentPlayers from JSON object and adds them to gamestate
     private void addCurrentPlayers(GameState gs, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("currentPlayers");
+
         for (Object json : jsonArray) {
             JSONObject nextPlayer = (JSONObject) json;
             addPlayer(gs, nextPlayer);
@@ -63,11 +64,26 @@ public class JsonReader {
     // EFFECTS: parses thingy from JSON object and adds it to workroom
     private void addPlayer(GameState gs, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
-       // String card = jsonObject.getString("card");
-      //  String number = jsonObject.getString("number");
-      //  Card cards = Card.valueof(jsonObject.getString("cards"));
         Player player = new Player(name);
+        addCards(player, jsonObject);
         gs.addPlayer(player);
+    }
+
+    private void addCards(Player player, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("cards");
+
+        for (Object json : jsonArray) {
+            JSONObject nextCard = (JSONObject) json;
+            addCard(player, nextCard);
+        }
+    }
+
+    private void addCard(Player player, JSONObject jsonObject) {
+        String colour = jsonObject.getString("colour");
+        Integer number = jsonObject.getInt("number");
+        Card card = new Card(colour, number);
+        player.addCardToHand(card);
+
     }
 
 }

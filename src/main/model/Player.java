@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writeable;
 
@@ -44,12 +45,19 @@ public class Player implements Writeable {
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
+
         json.put("name", playerName);
-        for (Card card : playerHand) {
-            json.put("colour", card.getColour());
-            json.put("number", card.getNumber());
-        }
+        json.put("cards", cardsToJson());
         return json;
+    }
+
+    public JSONArray cardsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Card c : playerHand) {
+            jsonArray.put(c.toJson());
+        }
+        return jsonArray;
     }
 
 

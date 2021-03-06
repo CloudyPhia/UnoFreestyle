@@ -2,7 +2,10 @@ package model;
 
 //Represents an uno card with a colour (as a string) and a value (as a number)
 
-public class Card {
+import org.json.JSONObject;
+import persistence.Writeable;
+
+public class Card implements Writeable {
     // CONSTANT:
     // card numbers 0-9
     // card colours (red, green, blue, yellow) ~ maybe choose just one colour?
@@ -19,6 +22,14 @@ public class Card {
         number = n;
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("colour", colour);
+        json.put("number", number);
+
+        return json;
+    }
 
     //getters
 

@@ -387,6 +387,8 @@ public class UnoApplication {
     //EFFECTS: saves the workroom to file
     private void saveGameState() {
         try {
+            gameState.addPlayer(player1);
+            gameState.addPlayer(player2);
             jsonWriter.open();
             jsonWriter.write(gameState);
             jsonWriter.close();
