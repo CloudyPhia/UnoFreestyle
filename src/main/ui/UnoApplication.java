@@ -16,11 +16,11 @@ import static java.lang.System.exit;
 
 //Uno card game application
 
-//USED FROM: [REPOSITORY THING[
-
-//have an integer that's keeping track of whos turn it is - what point in time you'll switch turn
-//switch statement (look it up!) :D , use break at the end of cases
-//list of players - for now set it to be 2 but later prompt user to ask for how many people are playing
+/*
+ * CITATION: saveGameState(); and loadGameState(); code obtained (and modified) from JsonSerializationDemo
+ *           - WorkRoomApp class.
+ *           URL: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+ */
 
 public class UnoApplication {
 
@@ -140,13 +140,6 @@ public class UnoApplication {
 
         askPlayerAboutLoadingOldGame();
 
-       // if (newGame) {
-//
-//            player1 = new Player("NameNotInitialized");
-//            player2 = new Player("NameNotInitialized2");
-            // player3 = new Player("NameNotInitialized3");
-            // player4 = new Player("NameNotInitialized4;");
-      //  }
     }
 
 
@@ -193,7 +186,7 @@ public class UnoApplication {
         }
     }
 
-    // MODIFIES: this
+    // MODIFIES: this, Player
     // EFFECTS: asks the player for a name and then sets the player's name to their input.
     private void askForName() {
 
@@ -328,6 +321,7 @@ public class UnoApplication {
 
     }
 
+    //MODIFIES: this
     //EFFECTS: resets the player turns to 0, effectively starting again with player1.
     private void resetPlayerTurns() {
         this.playerTurn = 0;
@@ -361,13 +355,12 @@ public class UnoApplication {
     //EFFECTS: displays the end menu.
     private void endMenu() {
         System.out.println("Currently ending the game. Would you like to save?");
-
         System.out.println("\tsave -> save game and exit");
         System.out.println("\tfinish -> end the game without saving");
 
     }
 
-    //EFFECTS: processes user commmand in the end menu.
+    //EFFECTS: processes user command in the end menu.
     private void processEndCommand(String endCommand) {
         while (endScreen) {
             if (endCommand.equals("save")) {
@@ -384,11 +377,14 @@ public class UnoApplication {
     }
 
 
+    //MODIFIES: gameState
     //EFFECTS: saves the workroom to file
     private void saveGameState() {
         try {
-            gameState.addPlayer(player1);
-            gameState.addPlayer(player2);
+            for (Player p: playerList) {
+                gameState.addPlayer(p);
+            }
+
             jsonWriter.open();
             jsonWriter.write(gameState);
             jsonWriter.close();
@@ -405,9 +401,6 @@ public class UnoApplication {
             gameState = jsonReader.read();
             System.out.println("Loaded " + gameState.getName() + " from " + JSON_STORE);
 
-//            for (int i = 0; i < gameState.getCurrentPlayers().size(); i++) {
-//                playerList.add(gameState.getCurrentPlayers().get(i));
-//            }
 
 
             player1 = gameState.getCurrentPlayers().get(0);

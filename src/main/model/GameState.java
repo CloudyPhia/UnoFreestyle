@@ -8,6 +8,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//Represents a gamestate having a collection of players
+
+/*
+ * CITATION: GameState code obtained (and modified) from JsonSerializationDemo - WorkRoom class
+ *           URL: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+ */
+
 public class GameState implements Writeable {
     private String name;
     private List<Player> currentPlayers;
@@ -16,10 +23,6 @@ public class GameState implements Writeable {
     public GameState(String name) {
         this.name = name;
         currentPlayers = new ArrayList<>();
-    }
-
-    public String getName() {
-        return name;
     }
 
     // MODIFIES: this
@@ -33,6 +36,7 @@ public class GameState implements Writeable {
         return Collections.unmodifiableList(currentPlayers);
     }
 
+    //EFFECTS: returns number of players in this gamestate
     public int numCurrentPlayers() {
         return currentPlayers.size();
     }
@@ -45,6 +49,7 @@ public class GameState implements Writeable {
         return json;
     }
 
+    //EFFECTS: returns Players in this GameState as a JSON array
     private JSONArray currentPlayersToJson() {
         JSONArray jsonArray = new JSONArray();
 
@@ -52,6 +57,13 @@ public class GameState implements Writeable {
             jsonArray.put(p.toJson());
         }
         return jsonArray;
+    }
+
+    //getters
+
+    //EFFECTS: gets the name of the gamestate
+    public String getName() {
+        return name;
     }
 
 

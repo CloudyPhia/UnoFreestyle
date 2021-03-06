@@ -12,6 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+// Represents a reader that reads gamestate from JSON data stored in file
+
+/*
+ * CITATION: JsonReader code obtained (and modified) from JsonSerializationDemo - JsonReader class
+ *           URL: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+ */
+
 public class JsonReader {
     private String source;
 
@@ -21,7 +28,7 @@ public class JsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads workroom from file and returns it;
+    // EFFECTS: reads gamestate from file and returns it;
     // throws IOException if an error occurs reading data from file
     public GameState read() throws IOException {
         String jsonData = readFile(source);
@@ -60,8 +67,8 @@ public class JsonReader {
 
     }
 
-    // MODIFIES: wr
-    // EFFECTS: parses thingy from JSON object and adds it to workroom
+    // MODIFIES: gs
+    // EFFECTS: parses player from JSON object and adds it to gamestate
     private void addPlayer(GameState gs, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         Player player = new Player(name);
@@ -69,6 +76,8 @@ public class JsonReader {
         gs.addPlayer(player);
     }
 
+    // MODIFIES: player
+    // EFFECTS: parses cards from JSON object and adds them to player
     private void addCards(Player player, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("cards");
 
@@ -78,6 +87,8 @@ public class JsonReader {
         }
     }
 
+    // MODIFIES: player
+    // EFFECTS: parses card from JSON object and adds it to player
     private void addCard(Player player, JSONObject jsonObject) {
         String colour = jsonObject.getString("colour");
         Integer number = jsonObject.getInt("number");

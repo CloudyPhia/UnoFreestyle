@@ -1,9 +1,15 @@
 package model;
 
-//Represents an uno card with a colour (as a string) and a value (as a number)
 
 import org.json.JSONObject;
 import persistence.Writeable;
+
+//Represents an uno card with a colour (as a string) and a value (as a number)
+
+/*
+ * CITATION: toJson(); method code obtained (and modified) from JsonSerializationDemo - Thingy class
+ *           URL: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+ */
 
 public class Card implements Writeable {
     // CONSTANT:

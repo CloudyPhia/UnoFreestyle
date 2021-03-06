@@ -7,6 +7,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+// Represents a writer that writes JSON representation of gamestate to file
+
+/*
+ * CITATION: JsonWriter code obtained (and modified) from JsonSerializationDemo - JsonWriter class
+ *           URL: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+ */
+
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -25,7 +32,7 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of workroom to file
+    // EFFECTS: writes JSON representation of gamestate to file
     public void write(GameState gs) {
         JSONObject json = gs.toJson();
         saveToFile(json.toString(TAB));

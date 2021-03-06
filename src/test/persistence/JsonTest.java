@@ -11,6 +11,15 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+//Tests for both the JsonReader and JsonWriter class (as they both rely on each other)
+//also partially tests the GameState class.
+
+/*
+ * CITATION: JsonReaderTest and JsonWriterTest code obtained (and modified) from JsonSerializationDemo
+ *            - both JsonReaderTest class and JsonWriterTest class
+ *           URL: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+ */
+
 public class JsonTest {
     //create gamestate object
     protected void checkPlayer(String name, Player player) {
@@ -68,10 +77,6 @@ public class JsonTest {
         }
     }
 
-    @Test
-    public void testEmptyGameState() {
-        //
-    }
 
     @Test
     public void testTwoPlayersFullCards() {

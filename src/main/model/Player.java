@@ -8,6 +8,12 @@ import java.util.ArrayList;
 
 // Represents a specific named player that is holding a hand of cards
 
+/*
+ * CITATION: toJson(); and cardsToJson(); method code obtained (and modified) from JsonSerializationDemo
+ *           - Thingy class and WorkRoom class respectively
+ *           URL: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+ */
+
 public class Player implements Writeable {
 
     private final ArrayList<Card> playerHand;
@@ -15,7 +21,6 @@ public class Player implements Writeable {
 
     //REQUIRES: playerName has a non-zero length
     //EFFECTS: instantiates the player's hand and sets the name to playerName.
-
     public Player(String playerName) {
         this.playerName = playerName;
         this.playerHand = new ArrayList<>();
@@ -51,6 +56,7 @@ public class Player implements Writeable {
         return json;
     }
 
+    //EFFECTS: returns cards in this player as a JSON array
     public JSONArray cardsToJson() {
         JSONArray jsonArray = new JSONArray();
 
@@ -62,6 +68,7 @@ public class Player implements Writeable {
 
 
     //setters
+    //EFFECTS: sets the name of the player
     public void setName(String playerName) {
         this.playerName = playerName;
     }
@@ -84,6 +91,7 @@ public class Player implements Writeable {
         return playerHand.indexOf(c);
     }
 
+    //EFFECTS: gets the name of the player
     public String getName() {
         return this.playerName;
     }
