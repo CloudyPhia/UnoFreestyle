@@ -232,19 +232,25 @@ public class UnoApplication {
     private void selectCard() {
 
         System.out.println(currentPlayer.getName() + ", Type ONLY the index number of the card you to discard.");
-        int selectedIndex = input.nextInt();
 
-        if (selectedIndex >= currentPlayer.getPlayerHandSize()) {
+        try {
+            int selectedIndex = input.nextInt();
 
+            if (selectedIndex >= currentPlayer.getPlayerHandSize()) {
+
+                System.out.println("Invalid index selection. Please try again.");
+
+            } else {
+                Card c = currentPlayer.getPlayerHand().get(selectedIndex);
+                System.out.println("Card " + c.getColour() + " " + c.getNumber() + " at index " + selectedIndex
+                        + " has been discarded.");
+                discardCard(currentPlayer, currentPlayer.getPlayerHand().get(selectedIndex));
+
+                nextPlayer();
+            }
+
+        } catch (Exception e) {
             System.out.println("Invalid index selection. Please try again.");
-
-        } else {
-            Card c = currentPlayer.getPlayerHand().get(selectedIndex);
-            System.out.println("Card " + c.getColour() + " " + c.getNumber() + " at index " + selectedIndex
-                    + " has been discarded.");
-            discardCard(currentPlayer, currentPlayer.getPlayerHand().get(selectedIndex));
-
-            nextPlayer();
         }
 
     }
@@ -283,6 +289,17 @@ public class UnoApplication {
             return false;
         } else {
             p.removeCardFromHand(c);
+
+            if (p.getPlayerHandSize() == 1) {
+                System.out.println("Uno!");
+            }
+            if (p.getPlayerHandSize() == 0) {
+                System.out.println(p.getName() + " has just won the game! Congratulations!");
+                System.out.println("Retrying and saving from this point is currently unavailable.");
+                System.out.println("If you'd like to play again, please restart the game.");
+                endGameMessage();
+                exit(0);
+            }
             return true;
         }
 
