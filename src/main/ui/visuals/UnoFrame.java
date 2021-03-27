@@ -1,48 +1,45 @@
 package ui.visuals;
 
 
-import com.sun.tools.javadoc.Start;
 import model.Card;
 import model.GameState;
 import model.Player;
 import persistence.JsonReader;
 import persistence.JsonWriter;
-import ui.UnoApplication;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-
-import static java.lang.System.exit;
 
 /*
  * Represents the main window in which the Uno
  * game is played
  */
+
 public class UnoFrame extends JFrame {
-    private Boolean startScreen = true;
-    private Boolean optionsMenuScreen = false;
-    private Boolean messagesScreen = false;
-    private Boolean enterNameScreen = false;
-    private Boolean discardSelectScreen = false;
-    private Boolean cardActionScreen = false;
+    private JPanel startContentPanel;
+    private JPanel discardSelectPanel;
+    private JPanel endPanel;
+    private JPanel namePanel;
+    private JPanel optionsPanel;
+
     private Boolean liveGame = false;
+    private Boolean namePanelBoolean = false;
+    private Boolean loadError = false;
     private Boolean setUpRun = true;
     private Boolean endScreen = false;
     private Boolean failure = false;
+    private Boolean discarding = false;
+    private Boolean drawing = false;
     private Boolean newGame = false;
+    private Boolean thanksForPlaying = false;
+    private Boolean saveError = false;
+    private Boolean endFromDiscard = false;
 
-    private CardActionPanel cardActionPanel;
-    private DiscardSelectPanel discardSelectPanel;
-    private EndPanel endPanel;
-    private EnterNamePanel enterNamePanel;
-    private MessagesPanel messagesPanel;
-    private OptionsMenuPanel optionsMenuPanel;
-    private StartPanel startPanel;
 
     private ArrayList<Player> playerList;
     private Player player1;
@@ -60,77 +57,105 @@ public class UnoFrame extends JFrame {
     private int playerTurn;
     protected static int STARTING_CARD_AMOUNT = 7;
 
-
     public UnoFrame() {
         super("Uno Application");
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(700, 600));
+        setLayout(new CardLayout());
         input = new Scanner(System.in);
         gameState = new GameState("Saved Game");
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
 
+        setUpPanels();
 
-        JComponent startContentPane = new StartPanel();
-        startContentPane.setOpaque(true);
-        setContentPane(startContentPane);
-        pack();
+        add(startContentPanel);
+        startContentPanel.setVisible(true);
         setVisible(true);
+        pack();
 
-       // runGame();
+        playerList = new ArrayList<>();
 
     }
 
-//    public void runGame() {
-////        boolean keepGoing = true;
-//        setUpStartScreen();
-////
-////        if (failure) {
-////            keepGoing = false;
-////            exit(1);
-////        }
-//
-//    }
+    //MODIFIES: this
+    //EFFECTS: sets up the panels that can be initialized at the beginning of the game (and adds them to the frame)
+    public void setUpPanels() {
+        startContentPanel = new StartPanel(this);
+        startContentPanel.setOpaque(true);
+        startContentPanel.setVisible(false);
+        startContentPanel.setBackground(Color.green);
+        namePanel = new EnterNamePanel(this);
+        namePanel.setOpaque(true);
+        namePanel.setVisible(false);
+        add(namePanel);
+    }
 
-//    public void setUpStartScreen() {
-//        StartPanel startPane = new StartPanel();
-//
-//        while (startScreen) {
-//            startPane.setOpaque(true);
-//            setContentPane(startPane);
-//            pack();
-//            setVisible(true);
-//        }
-//
-//        startPane.setOpaque(false);
-//        remove(startPane);
-//    }
+    //MODIFIES: this
+    //EFFECTS: initializes the discardPanel and adds it to the frame.
+    public void initializeDiscardPanel() {
+        discardSelectPanel = new DiscardSelectPanel(this);
+        discardSelectPanel.setOpaque(true);
+        discardSelectPanel.setVisible(false);
+        add(discardSelectPanel);
+    }
 
-    //TODO: ADD INIT AND ASKFOREACHPLAYERNAME
+    //MODIFIES: this
+    //EFFECTS: initializes the endPanel and adds it to the frame.
+    public void initializeEndPanel() {
+        endPanel = new EndPanel(this);
+        endPanel.setOpaque(true);
+        endPanel.setVisible(false);
+        add(endPanel);
+    }
+
+
+    //MODIFIES: this
+    //EFFECTS: initializes the optionsMenuPanel and adds it to the frame.
+    public void initializeOptionsMenuPanel() {
+        optionsPanel = new OptionsMenuPanel(this);
+        optionsPanel.setOpaque(true);
+        optionsPanel.setVisible(false);
+        add(optionsPanel);
+    }
+
+    //EFFECTS: initializes the players, sets the namePanel to visible, and hides the starting panel.
     public void newGameSelected() {
         init();
-//        //get the EnterName panel and ask for their names
-//        //askForEachPlayerName();
-//        startScreen = false;
-//
-//        resetPlayerTurns();
-//
-//
-//        add(enterNamePanel);
-//
-//        while (playerTurn < playerList.size()) {
-//            getCurrentPlayer();
-//            this.playerTurn++;
-//        }
-//        remove(enterNamePanel);
+        resetPlayerTurns();
+        //initializeNamePane();
+        namePanelBoolean = true;
+        namePanel.setVisible(true);
+        startContentPanel.setVisible(false);
+        //remove(startContentPane);
+        pack();
+
+    }
+
+    //EFFECTS: returns namePanelBoolean, which is just if the name panel is displaying or not.
+    public Boolean isNamePanelDisplaying() {
+        return namePanelBoolean;
     }
 
 
-    //TODO: ADD LOADGAMESTATE
+    //MODIFIES: this
+    //EFFECTS: If a previous game can be loaded, the game begins and the starting panel is removed. Otherwise, the
+    //         method returns and does not load a previous game.
     public void loadGameSelected() {
-        //loadGameState();
-        startScreen = false;
+        loadGameState();
+
+        if (loadError) {
+            return;
+        }
+
+        startContentPanel.setVisible(false);
+        remove(startContentPanel);
+        resetPlayerTurns();
+        beginOptions();
+
     }
+
 
     // MODIFIES: this, Player
     // EFFECTS: initializes the player and gives them their starting cards
@@ -153,14 +178,10 @@ public class UnoFrame extends JFrame {
         }
 
         resetPlayerTurns();
-        enterPlayerNames();
-    }
-
-    private void enterPlayerNames() {
-        remove(startPanel);
-        add(enterNamePanel);
 
     }
+
+
 
     //MODIFIES: this
     //EFFECTS: resets the player turns to 0, effectively starting again with player1.
@@ -183,7 +204,7 @@ public class UnoFrame extends JFrame {
 
     //MODIFIES: Player, this
     //EFFECTS: adds a randomized card to the player's hand.
-    public void drawFromDeck(Player p) {
+    public Card drawFromDeck(Player p) {
         Random random = new Random();
 
         int colour = random.nextInt(4);
@@ -202,16 +223,13 @@ public class UnoFrame extends JFrame {
         Card card = new Card(colourName, random.nextInt(10));
 
         p.addCardToHand(card);
-        if (liveGame) {
-            cardActionPanel.cardDrawScreen(card);
 
-            nextPlayer();
-        }
+        return card;
 
     }
 
     //EFFECTS: changes the turn to the next player
-    private void nextPlayer() {
+    public void nextPlayer() {
 
         if (playerTurn >= playerList.size() - 1) {
             resetPlayerTurns();
@@ -221,46 +239,254 @@ public class UnoFrame extends JFrame {
 
     }
 
-    //TODO:
-    public void drawCard() {
+    //MODIFIES: this
+    //EFFECTS: removes the namePanel, and initializes the options menu.
+    public void beginOptions() {
+        remove(namePanel);
+
+        initializeOptionsMenuPanel();
+
+        if (namePanelBoolean) {
+            resetPlayerTurns();
+            namePanelBoolean = false;
+        }
+
+        optionsPanel.setVisible(true);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: if the previous player discarded or drew a card, that menu will be hidden and the new options menu
+    //         will be displayed for the current player.
+    public void continueOptions() {
+        if (discarding) {
+            discardSelectPanel.setVisible(false);
+            remove(discardSelectPanel);
+            discarding = false;
+        }
+
+        if (drawing) {
+            optionsPanel.setVisible(false);
+            remove(optionsPanel);
+            drawing = false;
+        }
+
+        nextPlayer();
+        initializeOptionsMenuPanel();
+        optionsPanel.setVisible(true);
 
     }
 
-    //TODO:
+
+    //EFFECTS: gets the player turn
+    public Integer getPlayerTurn() {
+        return playerTurn;
+    }
+
+    //EFFECTS: gets the size of the current player's hand.
+    public Integer getPlayerHandSize() {
+        getCurrentPlayer();
+        return currentPlayer.getPlayerHandSize();
+    }
+
+
+    //EFFECTS: turns a card's colour and number into the corresponding string needed to find it as an image.
+    public String getCorrespondingCardImageName(Card card) {
+        switch (card.getColour()) {
+            case "Blue":
+                return "blue_" + String.valueOf(card.getNumber());
+            case "Yellow":
+                return "yellow_" + String.valueOf(card.getNumber());
+            case "Green":
+                return "green_" + String.valueOf(card.getNumber());
+            default:
+                return "red_" + String.valueOf(card.getNumber());
+
+        }
+    }
+
+    //EFFECTS: returns the card that was just drawn by the player.
+    public Card drawCard() {
+        drawing = true;
+        getCurrentPlayer();
+        return drawFromDeck(currentPlayer);
+    }
+
+    //EFFECTS: initializes the discard panel and removes the options panel. Basically sets up the discarding for the
+    //         current player.
     public void discardCard() {
+        initializeDiscardPanel();
+        remove(optionsPanel);
+        discardSelectPanel.setVisible(true);
+
+        discarding = true;
+    }
+
+    //MODIFIES: Player, this
+    //EFFECTS: removes the card in the player's hand at the given index.
+    public void removeCardAtIndex(Integer index) {
+        getCurrentPlayer();
+        currentPlayer.removeCardFromHand(currentPlayer.getPlayerHand().get(index));
 
     }
 
-    //TODO:
+
+    //MODIFIES: this
+    //EFFECTS: This endGame is used when the "end game" button is clicked in the options menu. It initializes the
+    //         endPanel and removes the options panel.
     public void endGame() {
-
+        initializeEndPanel();
+        remove(optionsPanel);
+        endPanel.setVisible(true);
     }
 
-    //TODO: this is like specificlaly for the enter name panel
-    public String getPlayerNumber() {
-        return null;
+    //MODIFIES: this
+    //EFFECTS: This ending is used when a player runs out of cards when theyre discarding (their hand is empty). It
+    //         removes the discard panel and initializes the end panel.
+    public void ending() {
+        remove(discardSelectPanel);
+        endFromDiscard = true;
+        initializeEndPanel();
+        endPanel.setVisible(true);
     }
 
-    //TODO: GET THEIR NAME
+    //EFFECTS: returns the "endFromDiscard" boolean. This is used to clarify if we've just ended from the discardPanel
+    //         or if we've ended by selecting "end game".
+    public Boolean getEndFromDiscard() {
+        return endFromDiscard;
+    }
+
+
+    //EFFECTS: returns the player's name.
     public String getPlayerName() {
-        return null;
+        getCurrentPlayer();
+        return currentPlayer.getName();
     }
 
-    //TODO: GET THE CARD NAMES AND THEIR COLOURS AND SHIT FOR EACH SPECIFIC PLAYER WHEN ITS THEIR TURN
-    //what this is going to do. is we are going to say:
-    //   for each of the cards:
-    //   if the number is 1: see what colour it is
-    //   if its 1 and blue, add Blue1 to the list.
-    //   blue1 will then correspond to an image of a Blue 1.
-    //   obvioulsy do this for each of the cards, and reiterate through this list each time this is called.
+
+    //EFFECTS: gets the player's cards as a StringArray. This is important for our discardPanel where we need the scroll
+    //         menu.
     public String[] getPlayerCards() {
-        return null;
+        ArrayList<String> cardInHand;
+        cardInHand = convertPlayerHandToStringArrayList();
+        String[] strArray = cardInHand.toArray(new String[cardInHand.size()]);
+        return strArray;
+
     }
 
-    //TODO: SET THE PLAYER'S NAME
+    //EFFECTS: turns all of the cards into Strings that fit their respective image formats compared to just cards and
+    //         integers.
+    public ArrayList<String> convertPlayerHandToStringArrayList() {
+        ArrayList<String> cardInHand = new ArrayList<>();
+        getCurrentPlayer();
+        for (Card card : currentPlayer.getPlayerHand()) {
+            switch (card.getColour()) {
+                case "Blue":
+                    cardInHand.add("blue_" + String.valueOf(card.getNumber()));
+                    break;
+                case "Green":
+                    cardInHand.add("green_" + String.valueOf(card.getNumber()));
+                    break;
+                case "Yellow":
+                    cardInHand.add("yellow_" + String.valueOf(card.getNumber()));
+                    break;
+                default:
+                    cardInHand.add("red_" + String.valueOf(card.getNumber()));
+                    break;
+            }
+        }
+        return cardInHand;
+
+    }
+
+    //EFFECTS: returns the card at the current player's index. (Used in the discard panel)
+    public Card getCardAtIndex(Integer index) {
+        return currentPlayer.getPlayerHand().get(index);
+    }
+
+
+    //MODIFIES: Player
+    //EFFECTS: sets the player's name.
     public void setPlayerName(String name) {
-        //set their name
-        //make the call to messages panel, display message for like 5 seconds or smth
+        getCurrentPlayer();
+        currentPlayer.setName(name);
+    }
+
+    //EFFECTS: the public call to saveGameState. Saves the gamestate.
+    public void saveGame() {
+        saveGameState();
+    }
+
+    //EFFECTS: returns "saveError" - used to clarify if there was an error when saving.
+    public Boolean getSaveError() {
+        return saveError;
+    }
+
+    //EFFECTS: returns "getLoadError" - used to clarify if there was an error when loading.
+    public Boolean getLoadError() {
+        return loadError;
+    }
+
+
+
+    //MODIFIES: gameState
+    //EFFECTS: saves the gamestate to file
+    private void saveGameState() {
+        try {
+            for (Player p: playerList) {
+                gameState.addPlayer(p);
+            }
+
+            jsonWriter.open();
+            jsonWriter.write(gameState);
+            jsonWriter.close();
+            System.out.println("Saved " + gameState.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+            saveError = true;
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: loads gamestate from file. If there were no players saved to the file, the game quits and asks the player
+    //         to load the game again.
+    private void loadGameState() {
+        try {
+            gameState = jsonReader.read();
+
+            if (gameState.numCurrentPlayers() <= 1) {
+             //   System.out.println("No previous game saved to the file. Please reload and start a new game.");
+             //   exit(2);
+                JOptionPane.showMessageDialog(this,
+                        "Unable to load previous game. Click the button to begin a new game.",
+                        "Loading error",
+                        JOptionPane.ERROR_MESSAGE);
+
+                loadError = true;
+
+            }
+
+            System.out.println("Loaded " + gameState.getName() + " from " + JSON_STORE);
+
+            for (Player p: gameState.getCurrentPlayers()) {
+                playerList.add(p);
+            }
+
+
+        } catch (IOException e) {
+            //System.out.println("Unable to read from file: " + JSON_STORE);
+            JOptionPane.showMessageDialog(this,
+                    "Unable to read from file: " + JSON_STORE + ". Starting a new game.",
+                    "Loading error",
+                    JOptionPane.ERROR_MESSAGE);
+
+            //System.out.println("Please reload and start a new game.");
+
+            loadError = true;
+
+
+            //failure = true;
+        }
+
     }
 
 }

@@ -1,15 +1,21 @@
 package ui.visuals;
 
+import model.Card;
+import model.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import static ui.visuals.DiscardSelectPanel.createImageIcon;
+
+//Represents the panel where the user can select their options on their turn.
+
 public class OptionsMenuPanel extends JPanel implements ActionListener {
     //PLAYER'S name displayed at the top
     //buttons for CHOOSE,DRAW, and EXIT
-    private UnoFrame unoFrame;
 
     private static final String DRAW_BUTTON_TOOL_TIP_TXT = "Click this button to start a new game.";
     private static final String DISCARD_BUTTON_TOOL_TIP_TXT = "Click this button to load a previous game.";
@@ -17,14 +23,22 @@ public class OptionsMenuPanel extends JPanel implements ActionListener {
     private static final String DISCARD_BUTTON_NAME = "Discard";
     private static final String END_BUTTON_NAME = "End Game";
 
+
     protected JButton drawButton;
     protected JButton discardButton;
     protected JButton endButton;
     protected JLabel titleText;
+    private UnoFrame unoFrame;
 
 
-    public OptionsMenuPanel() {
-        super(new GridLayout(3, 1));
+    public OptionsMenuPanel(UnoFrame unoFrame) {
+        super(new GridLayout(4, 1));
+        this.unoFrame = unoFrame;
+        // unoFrame = new UnoFrame(); CAUSES OVERLFOW
+
+       // icon = createImageIcon("ui.visuals.images/wild_pick_four.png"); // just to initialize
+
+
         titleText = new JLabel(optionsMenuTitle());
         titleText.setHorizontalAlignment(JLabel.CENTER);
 
@@ -40,91 +54,71 @@ public class OptionsMenuPanel extends JPanel implements ActionListener {
         setUpButton(endButton);
         endButton.setActionCommand("end");
 
-        add(drawButton);
-        add(discardButton);
-        add(endButton);
+        drawButton.addActionListener(this);
+        discardButton.addActionListener(this);
+        endButton.addActionListener(this);
 
         drawButton.setEnabled(true);
         discardButton.setEnabled(true);
         endButton.setEnabled(true);
 
+        add(titleText);
+        add(drawButton);
+        add(discardButton);
+        add(endButton);
+
     }
 
+    /**
+     * Invoked when an action occurs.
+     *
+     *
+     */
     public void actionPerformed(ActionEvent e) {
         if ("draw".equals(e.getActionCommand())) {
             drawButton.setEnabled(false);
             discardButton.setEnabled(false);
             endButton.setEnabled(false);
-            unoFrame.drawCard();
+            draw();
         } else if ("discard".equals(e.getActionCommand())) {
             drawButton.setEnabled(false);
             discardButton.setEnabled(false);
             endButton.setEnabled(false);
             unoFrame.discardCard();
-        } else if ("end".equals(e.getActionCommand())) {
+        } else {
             drawButton.setEnabled(false);
             discardButton.setEnabled(false);
             endButton.setEnabled(false);
             unoFrame.endGame();
-        } else {
-            drawButton.setEnabled(true);
-            discardButton.setEnabled(true);
-            endButton.setEnabled(true);
         }
     }
 
+    //EFFECTS: displays the card image with text describing what card was drawn. It also calls a method that adds the
+    //         card to the hand.
+    public void draw() {
+        Card card = unoFrame.drawCard();
+        ImageIcon icon = createImageIcon("./data/images/" + unoFrame.getCorrespondingCardImageName(card) + ".png");
+        JOptionPane.showMessageDialog(unoFrame,
+                "Wow, " + unoFrame.getPlayerName() + "! You drew a "
+                        + card.getColour() + " " + String.valueOf(card.getNumber()) + "!",
+                "Card drawn",
+                JOptionPane.INFORMATION_MESSAGE,
+                icon);
 
+        unoFrame.continueOptions();
+    }
+
+    //EFFECTS: sets up a generic button with center text alignment.
     public void setUpButton(JButton button) {
         button.setVerticalTextPosition(AbstractButton.CENTER);
         button.setHorizontalTextPosition(AbstractButton.CENTER);
         button.setMnemonic(KeyEvent.VK_D);
     }
 
+    //EFFECTS: constructs the title of the screen, including the player-specific name.
     public String optionsMenuTitle() {
         String options = "Here are your options, " + unoFrame.getPlayerName() + "!";
         return options;
     }
 
-
-//    public StartPanel() {
-//        super(new GridLayout(3, 1));
-//        titleText = new JLabel(START_MENU_TITLE);
-//        titleText.setHorizontalAlignment(JLabel.CENTER);
-//
-//        newButton = new JButton(NEW_BUTTON_NAME);
-//        newButton.setVerticalTextPosition(AbstractButton.CENTER);
-//        newButton.setHorizontalTextPosition(AbstractButton.CENTER);
-//        newButton.setMnemonic(KeyEvent.VK_D);
-//        newButton.setActionCommand("new");
-//
-//        loadButton = new JButton(LOAD_BUTTON_NAME);
-//        loadButton.setVerticalTextPosition(AbstractButton.CENTER);
-//        loadButton.setHorizontalTextPosition(AbstractButton.CENTER);
-//        loadButton.setMnemonic(KeyEvent.VK_D);
-//        loadButton.setActionCommand("load");
-//
-//        newButton.setToolTipText(NEW_BUTTON_TOOL_TIP_TXT);
-//        newButton.setToolTipText(LOAD_BUTTON_TOOL_TIP_TXT);
-//
-//        add(titleText);
-//        add(loadButton);
-//        add(newButton);
-//
-//    }
-//
-//
-//    public void actionPerformed(ActionEvent e) {
-//        if ("new".equals(e.getActionCommand())) {
-//            newButton.setEnabled(false);
-//            loadButton.setEnabled(false);
-//            unoFrame.newGameSelected();
-//        } else if ("load".equals(e.getActionCommand())) {
-//            newButton.setEnabled(false);
-//            loadButton.setEnabled(false);
-//            unoFrame.loadGameSelected();
-//        } else {
-//            newButton.setEnabled(true);
-//            loadButton.setEnabled(true);
-//        }
-//    }
 }
