@@ -7,7 +7,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-//represents the panel where the user inputs their name.
+//Represents the panel where the user inputs their name.
+
+/*
+    CITATION: EnterNamePanelCode based on the ListDemo project from the java oracle library.
+              URL: https://docs.oracle.com/javase/tutorial/uiswing/components/list.html
+ */
 
 public class EnterNamePanel extends JPanel {
     //ENTER P1/P2/P3/P4's name: _____

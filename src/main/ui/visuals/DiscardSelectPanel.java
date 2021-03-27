@@ -12,8 +12,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 /*
- * CITATION: DiscardSelectPanel code obtained (and modified) from SplitPaneDemo2Project
- *           URL: _____
+ * CITATION: DiscardSelectPanel code based on the SplitPaneDemo2Project from the java oracle library.
+ *           URL: https://docs.oracle.com/javase/tutorial/uiswing/components/splitpane.html
+ */
+
+/*
+ * UnoCard images were utilized from https://opengameart.org/content/uno-playing-cards-2d by author mehrasaur.
  */
 
 //Represents the discard select panel
@@ -99,9 +103,9 @@ public class DiscardSelectPanel extends JPanel implements ListSelectionListener,
         updateLabel(playerCardNames[list.getSelectedIndex()]);
     }
 
-    //Renders the selected image
+    //EFFECTS: Renders the selected image
     protected void updateLabel(String name) {
-        ImageIcon icon = createImageIcon("ui.visuals.images/" + name + ".png");
+        ImageIcon icon = createImageIcon("images/" + name + ".png");
         picture.setIcon(icon);
         if  (icon != null) {
             picture.setText(null);
