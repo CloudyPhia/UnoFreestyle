@@ -37,14 +37,16 @@ public class EnterNamePanel extends JPanel {
         nameButton.setActionCommand("nameAdded");
         nameButton.addActionListener(addNameListener);
         nameButton.setEnabled(false);
+        nameButton.setOpaque(true);
+        nameButton.setBorderPainted(false);
+        nameButton.setBackground(new java.awt.Color(226, 234, 252));
 
         titleLabel = new JLabel("Please enter this player's name.", JLabel.CENTER);
 
         playerNameField = new JTextField(10);
         playerNameField.addActionListener(addNameListener);
         playerNameField.getDocument().addDocumentListener(addNameListener);
-//        String name = listModel.getElementAt(
-//                list.getSelectedIndex()).toString();
+        playerNameField.setBackground(new java.awt.Color(237, 242, 251));
 
         setUpExtraPanelForButtonSpace();
 
