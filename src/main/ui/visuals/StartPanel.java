@@ -10,6 +10,11 @@ import java.awt.event.KeyEvent;
 
 //Represents a class that displays the panel that opens at the very beginning of the game.
 
+/*
+    CITATION: StartPanel based partially on the ButtonDemo project from the java oracle library.
+              URL: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html
+ */
+
 public class StartPanel extends JPanel implements ActionListener {
     // start menu - has "UNO" at the top with two buttons for loading and saving
 
@@ -34,20 +39,7 @@ public class StartPanel extends JPanel implements ActionListener {
         titleText = new JLabel(START_MENU_TITLE);
         titleText.setHorizontalAlignment(JLabel.CENTER);
 
-        newButton = new JButton(NEW_BUTTON_NAME);
-        newButton.setVerticalTextPosition(AbstractButton.CENTER);
-        newButton.setHorizontalTextPosition(AbstractButton.CENTER);
-        newButton.setMnemonic(KeyEvent.VK_D);
-        newButton.setActionCommand("new");
-
-        loadButton = new JButton(LOAD_BUTTON_NAME);
-        loadButton.setVerticalTextPosition(AbstractButton.CENTER);
-        loadButton.setHorizontalTextPosition(AbstractButton.CENTER);
-        loadButton.setMnemonic(KeyEvent.VK_E);
-        loadButton.setActionCommand("load");
-
-        newButton.setToolTipText(NEW_BUTTON_TOOL_TIP_TXT);
-        loadButton.setToolTipText(LOAD_BUTTON_TOOL_TIP_TXT);
+        setUpButtons();
 
         newButton.addActionListener(this);
         loadButton.addActionListener(this);
@@ -56,6 +48,30 @@ public class StartPanel extends JPanel implements ActionListener {
         add(loadButton);
         add(newButton);
 
+    }
+
+    //EFFECTS: sets up the new and load buttons.
+    public void setUpButtons() {
+        newButton = new JButton(NEW_BUTTON_NAME);
+        newButton.setVerticalTextPosition(AbstractButton.CENTER);
+        newButton.setHorizontalTextPosition(AbstractButton.CENTER);
+        newButton.setMnemonic(KeyEvent.VK_D);
+        newButton.setActionCommand("new");
+        newButton.setOpaque(true);
+        newButton.setBorderPainted(false);
+        newButton.setBackground(new java.awt.Color(215, 227, 252));
+
+        loadButton = new JButton(LOAD_BUTTON_NAME);
+        loadButton.setVerticalTextPosition(AbstractButton.CENTER);
+        loadButton.setHorizontalTextPosition(AbstractButton.CENTER);
+        loadButton.setMnemonic(KeyEvent.VK_E);
+        loadButton.setOpaque(true);
+        loadButton.setBorderPainted(false);
+        loadButton.setBackground(new java.awt.Color(226, 234, 252));
+        loadButton.setActionCommand("load");
+
+        newButton.setToolTipText(NEW_BUTTON_TOOL_TIP_TXT);
+        loadButton.setToolTipText(LOAD_BUTTON_TOOL_TIP_TXT);
     }
 
     /**

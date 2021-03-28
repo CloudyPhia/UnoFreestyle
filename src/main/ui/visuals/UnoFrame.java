@@ -85,10 +85,11 @@ public class UnoFrame extends JFrame {
         startContentPanel = new StartPanel(this);
         startContentPanel.setOpaque(true);
         startContentPanel.setVisible(false);
-        startContentPanel.setBackground(Color.green);
+        startContentPanel.setBackground(new java.awt.Color(171, 196, 255));
         namePanel = new EnterNamePanel(this);
         namePanel.setOpaque(true);
         namePanel.setVisible(false);
+        namePanel.setBackground(new java.awt.Color(182, 204, 254));
         add(namePanel);
     }
 
@@ -98,7 +99,9 @@ public class UnoFrame extends JFrame {
         discardSelectPanel = new DiscardSelectPanel(this);
         discardSelectPanel.setOpaque(true);
         discardSelectPanel.setVisible(false);
+        discardSelectPanel.setBackground(new java.awt.Color(182, 204, 254));
         add(discardSelectPanel);
+        pack();
     }
 
     //MODIFIES: this
@@ -107,6 +110,7 @@ public class UnoFrame extends JFrame {
         endPanel = new EndPanel(this);
         endPanel.setOpaque(true);
         endPanel.setVisible(false);
+        endPanel.setBackground(new java.awt.Color(193, 211, 254));
         add(endPanel);
     }
 
@@ -117,6 +121,7 @@ public class UnoFrame extends JFrame {
         optionsPanel = new OptionsMenuPanel(this);
         optionsPanel.setOpaque(true);
         optionsPanel.setVisible(false);
+        optionsPanel.setBackground(new java.awt.Color(171, 196, 255));
         add(optionsPanel);
     }
 

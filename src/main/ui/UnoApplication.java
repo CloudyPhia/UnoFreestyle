@@ -14,7 +14,8 @@ import java.util.Scanner;
 
 import static java.lang.System.exit;
 
-//Uno card game application
+//This class is NO LONGER USED and was mainly utilized before the graphical interface was implemented.
+//Represents an old class that is no longer used (but was previously where the unoapplication was run.)
 
 /*
  * CITATION: saveGameState(); and loadGameState(); code obtained (and modified) from JsonSerializationDemo

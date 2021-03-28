@@ -14,6 +14,9 @@ import java.awt.event.KeyEvent;
 /*
  * CITATION: DiscardSelectPanel code based on the SplitPaneDemo2Project from the java oracle library.
  *           URL: https://docs.oracle.com/javase/tutorial/uiswing/components/splitpane.html
+ *
+ *           Also based partially on the ButtonDemo project from the java oracle library:
+             URL: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html
  */
 
 /*
@@ -65,15 +68,21 @@ public class DiscardSelectPanel extends JPanel implements ListSelectionListener,
         cardsScrollPane.setMinimumSize(minimumSize);
         pictureScrollPane.setMinimumSize(minimumSize);
 
-        splitPane.setPreferredSize(new Dimension(400, 500));
+
+        splitPane.setMinimumSize(new Dimension(1200, 400));
         updateLabel(playerCardNames[cards.getSelectedIndex()]);
 
         addElements();
+
     }
 
     //MODIFIES: this
-    //EFFECTS: adds the elements to the panel.
+    //EFFECTS: adds the elements to the panel and sets their background colours.
     public void addElements() {
+        cardsScrollPane.setOpaque(true);
+        discardButton.setOpaque(true);
+        discardButton.setBorderPainted(false);
+        discardButton.setBackground(new java.awt.Color(237, 242, 251));
         add(cardsScrollPane);
         add(pictureScrollPane);
         add(discardButton);
@@ -134,7 +143,7 @@ public class DiscardSelectPanel extends JPanel implements ListSelectionListener,
     public void actionPerformed(ActionEvent e) {
         discardButton.setEnabled(false);
         Card card = unoFrame.getCardAtIndex(cards.getSelectedIndex());
-        ImageIcon icon = createImageIcon("./data/images/" + unoFrame.getCorrespondingCardImageName(card) + ".png");
+        ImageIcon icon = createImageIcon("images/" + unoFrame.getCorrespondingCardImageName(card) + ".png");
         JOptionPane.showMessageDialog(unoFrame,
                 unoFrame.getPlayerName() + ", You discarded a "
                         + card.getColour() + " " + String.valueOf(card.getNumber()) + "!",

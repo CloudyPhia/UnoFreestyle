@@ -8,6 +8,11 @@ import java.awt.event.KeyEvent;
 
 //Represents the panel that displays when the player selects "end game".
 
+/*
+    CITATION: EndPanel based partially on the ButtonDemo project from the java oracle library.
+              URL: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html
+ */
+
 public class EndPanel extends JPanel implements ActionListener {
     protected JButton saveButton;
     protected JButton endButton;
@@ -64,6 +69,9 @@ public class EndPanel extends JPanel implements ActionListener {
         saveButton.setMnemonic(KeyEvent.VK_D);
         saveButton.setActionCommand("save");
         saveButton.setEnabled(true);
+        saveButton.setOpaque(true);
+        saveButton.setBorderPainted(false);
+        saveButton.setBackground(new java.awt.Color(226, 234, 252));
     }
 
     //EFFECTS: sets up the end button.
@@ -74,6 +82,8 @@ public class EndPanel extends JPanel implements ActionListener {
         endButton.setMnemonic(KeyEvent.VK_E);
         endButton.setActionCommand("end");
         endButton.setEnabled(true);
+        endButton.setBorderPainted(false);
+        endButton.setBackground(new java.awt.Color(226, 234, 252));
     }
 
     //EFFECTS: displays the text at the very end of the game, when all buttons are disabled and nothing more can be done

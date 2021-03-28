@@ -1,7 +1,6 @@
 package ui.visuals;
 
 import model.Card;
-import model.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +11,11 @@ import java.awt.event.KeyEvent;
 import static ui.visuals.DiscardSelectPanel.createImageIcon;
 
 //Represents the panel where the user can select their options on their turn.
+
+/*
+    CITATION: OptionsMenuPanel based partially on the ButtonDemo project from the java oracle library.
+              URL: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html
+ */
 
 public class OptionsMenuPanel extends JPanel implements ActionListener {
     //PLAYER'S name displayed at the top
@@ -34,25 +38,11 @@ public class OptionsMenuPanel extends JPanel implements ActionListener {
     public OptionsMenuPanel(UnoFrame unoFrame) {
         super(new GridLayout(4, 1));
         this.unoFrame = unoFrame;
-        // unoFrame = new UnoFrame(); CAUSES OVERLFOW
-
-       // icon = createImageIcon("ui.visuals.images/wild_pick_four.png"); // just to initialize
-
 
         titleText = new JLabel(optionsMenuTitle());
         titleText.setHorizontalAlignment(JLabel.CENTER);
 
-        drawButton = new JButton(DRAW_BUTTON_NAME);
-        setUpButton(drawButton);
-        drawButton.setActionCommand("draw");
-
-        discardButton = new JButton(DISCARD_BUTTON_NAME);
-        setUpButton(discardButton);
-        discardButton.setActionCommand("discard");
-
-        endButton = new JButton(END_BUTTON_NAME);
-        setUpButton(endButton);
-        endButton.setActionCommand("end");
+        setUpButtons();
 
         drawButton.addActionListener(this);
         discardButton.addActionListener(this);
@@ -67,6 +57,30 @@ public class OptionsMenuPanel extends JPanel implements ActionListener {
         add(discardButton);
         add(endButton);
 
+    }
+
+    //EFFECTS: sets up the draw, discard, and end buttons.
+    public void setUpButtons() {
+        drawButton = new JButton(DRAW_BUTTON_NAME);
+        setUpButton(drawButton);
+        drawButton.setActionCommand("draw");
+        drawButton.setOpaque(true);
+        drawButton.setBorderPainted(false);
+        drawButton.setBackground(new java.awt.Color(237, 242, 251));
+
+        discardButton = new JButton(DISCARD_BUTTON_NAME);
+        setUpButton(discardButton);
+        discardButton.setActionCommand("discard");
+        discardButton.setOpaque(true);
+        discardButton.setBorderPainted(false);
+        discardButton.setBackground(new java.awt.Color(226, 234, 252));
+
+        endButton = new JButton(END_BUTTON_NAME);
+        setUpButton(endButton);
+        endButton.setActionCommand("end");
+        endButton.setOpaque(true);
+        endButton.setBorderPainted(false);
+        endButton.setBackground(new java.awt.Color(215, 227, 252));
     }
 
     /**
@@ -97,7 +111,7 @@ public class OptionsMenuPanel extends JPanel implements ActionListener {
     //         card to the hand.
     public void draw() {
         Card card = unoFrame.drawCard();
-        ImageIcon icon = createImageIcon("./data/images/" + unoFrame.getCorrespondingCardImageName(card) + ".png");
+        ImageIcon icon = createImageIcon("images/" + unoFrame.getCorrespondingCardImageName(card) + ".png");
         JOptionPane.showMessageDialog(unoFrame,
                 "Wow, " + unoFrame.getPlayerName() + "! You drew a "
                         + card.getColour() + " " + String.valueOf(card.getNumber()) + "!",
