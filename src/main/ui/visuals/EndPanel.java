@@ -19,7 +19,7 @@ public class EndPanel extends JPanel implements ActionListener {
     protected JLabel titleText;
     protected JLabel endText;
 
-    private UnoFrame unoFrame;
+    private final UnoFrame unoFrame;
 
     private static final String END_MENU_TITLE = "So, you're looking to end the game.";
     private static final String SAVE_BUTTON_TOOL_TIP_TXT = "Click this button to save your game and end.";

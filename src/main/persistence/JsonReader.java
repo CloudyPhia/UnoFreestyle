@@ -1,5 +1,7 @@
 package persistence;
 
+import exceptions.IllegalNumberException;
+import exceptions.IncorrectColourException;
 import model.Card;
 import model.GameState;
 import model.Player;
@@ -20,7 +22,7 @@ import java.util.stream.Stream;
  */
 
 public class JsonReader {
-    private String source;
+    private final String source;
 
 
     // EFFECTS: constructs reader to read from source file
@@ -92,7 +94,17 @@ public class JsonReader {
     private void addCard(Player player, JSONObject jsonObject) {
         String colour = jsonObject.getString("colour");
         Integer number = jsonObject.getInt("number");
-        Card card = new Card(colour, number);
+        Card card = null;
+        try {
+            card = new Card(colour, number);
+        } catch (IllegalNumberException e) {
+            card = null;
+            System.out.println("IllegalNumberException thrown.");
+        } catch (IncorrectColourException e) {
+            card = null;
+            System.out.println("IncorrectColourException thrown.");
+        }
+
         player.addCardToHand(card);
 
     }

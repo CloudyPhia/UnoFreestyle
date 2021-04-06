@@ -1,6 +1,8 @@
 package model;
 
 
+import exceptions.IllegalNumberException;
+import exceptions.IncorrectColourException;
 import org.json.JSONObject;
 import persistence.Writeable;
 
@@ -16,17 +18,28 @@ public class Card implements Writeable {
     // card numbers 0-9
     // card colours (red, green, blue, yellow) ~ maybe choose just one colour?
     // previous cards in hand
-    private String colour;
-    private int number;
+    private final String colour;
+    private final int number;
 
-
-    //REQUIRES: string to be one of "Red" "Blue" "Yellow" "Green" and int to be 0 <= n <= 9
     //MODIFIES: this
     //EFFECTS: instantiates a card with colour c and value n
-    public Card(String c, int n) {
+    public Card(String c, int n) throws IllegalNumberException, IncorrectColourException {
+        if (n > 9 || n < 0) {
+            throw new IllegalNumberException();
+        }
+
+        if (!isCorrectColour(c)) {
+            throw new IncorrectColourException();
+        }
+
         colour = c;
         number = n;
     }
+
+    public Boolean isCorrectColour(String c) {
+        return c.equals("Blue") || c.equals("Red") || c.equals("Yellow") || c.equals("Green");
+    }
+
 
     @Override
     public JSONObject toJson() {

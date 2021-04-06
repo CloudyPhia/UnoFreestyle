@@ -29,15 +29,15 @@ public class DiscardSelectPanel extends JPanel implements ListSelectionListener,
     //split screen panel where image of the card shows up on right, name of card on left
     // button to discard at the bottom
 
-    private JLabel picture;
-    private JList cards;
-    private JSplitPane splitPane;
-    private JScrollPane cardsScrollPane;
-    private JScrollPane pictureScrollPane;
+    private final JLabel picture;
+    private final JList cards;
+    private final JSplitPane splitPane;
+    private final JScrollPane cardsScrollPane;
+    private final JScrollPane pictureScrollPane;
     protected JButton discardButton;
 
-    private UnoFrame unoFrame;
-    private String[] playerCardNames;
+    private final UnoFrame unoFrame;
+    private final String[] playerCardNames;
 
     public DiscardSelectPanel(UnoFrame unoFrame) {
 
@@ -146,7 +146,7 @@ public class DiscardSelectPanel extends JPanel implements ListSelectionListener,
         ImageIcon icon = createImageIcon("images/" + unoFrame.getCorrespondingCardImageName(card) + ".png");
         JOptionPane.showMessageDialog(unoFrame,
                 unoFrame.getPlayerName() + ", You discarded a "
-                        + card.getColour() + " " + String.valueOf(card.getNumber()) + "!",
+                        + card.getColour() + " " + card.getNumber() + "!",
                 "Card drawn",
                 JOptionPane.INFORMATION_MESSAGE,
                 icon);

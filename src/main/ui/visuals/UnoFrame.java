@@ -1,6 +1,8 @@
 package ui.visuals;
 
 
+import exceptions.IllegalNumberException;
+import exceptions.IncorrectColourException;
 import model.Card;
 import model.GameState;
 import model.Player;
@@ -11,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -27,21 +30,21 @@ public class UnoFrame extends JFrame {
     private JPanel namePanel;
     private JPanel optionsPanel;
 
-    private Boolean liveGame = false;
+    private final Boolean liveGame = false;
     private Boolean namePanelBoolean = false;
     private Boolean loadError = false;
-    private Boolean setUpRun = true;
-    private Boolean endScreen = false;
-    private Boolean failure = false;
+    private final Boolean setUpRun = true;
+    private final Boolean endScreen = false;
+    private final Boolean failure = false;
     private Boolean discarding = false;
     private Boolean drawing = false;
-    private Boolean newGame = false;
-    private Boolean thanksForPlaying = false;
+    private final Boolean newGame = false;
+    private final Boolean thanksForPlaying = false;
     private Boolean saveError = false;
     private Boolean endFromDiscard = false;
 
 
-    private ArrayList<Player> playerList;
+    private final ArrayList<Player> playerList;
     private Player player1;
     private Player player2;
     //private Player player3; for future use
@@ -49,10 +52,10 @@ public class UnoFrame extends JFrame {
     private Player currentPlayer;
 
     private static final String JSON_STORE = "./data/gamestate.json";
-    private Scanner input;
+    private final Scanner input;
     private GameState gameState;
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
 
     private int playerTurn;
     protected static int STARTING_CARD_AMOUNT = 7;
@@ -210,27 +213,37 @@ public class UnoFrame extends JFrame {
     //MODIFIES: Player, this
     //EFFECTS: adds a randomized card to the player's hand.
     public Card drawFromDeck(Player p) {
-        Random random = new Random();
+        try {
+            Random random = new Random();
 
-        int colour = random.nextInt(4);
-        String colourName = "";
+            int colour = random.nextInt(4);
+            String colourName = "";
 
-        if (colour == 0) {
-            colourName = "Red";
-        } else if (colour == 1) {
-            colourName = "Blue";
-        } else if (colour == 2) {
-            colourName = "Yellow";
-        } else {
-            colourName = "Green";
+            if (colour == 0) {
+                colourName = "Red";
+            } else if (colour == 1) {
+                colourName = "Blue";
+            } else if (colour == 2) {
+                colourName = "Yellow";
+            } else {
+                colourName = "Green";
+            }
+
+            Card card = new Card(colourName, random.nextInt(10));
+
+            p.addCardToHand(card);
+
+            return card;
+
+        } catch (IllegalNumberException e) {
+            System.out.println("This card was generated with an illegal number and was not added to the hand.");
+
+            return null;
+        } catch (IncorrectColourException e) {
+            System.out.println("This card was generated with an illegal colour and was not added to the hand.");
+
+            return null;
         }
-
-        Card card = new Card(colourName, random.nextInt(10));
-
-        p.addCardToHand(card);
-
-        return card;
-
     }
 
     //EFFECTS: changes the turn to the next player
@@ -298,13 +311,13 @@ public class UnoFrame extends JFrame {
     public String getCorrespondingCardImageName(Card card) {
         switch (card.getColour()) {
             case "Blue":
-                return "blue_" + String.valueOf(card.getNumber());
+                return "blue_" + card.getNumber();
             case "Yellow":
-                return "yellow_" + String.valueOf(card.getNumber());
+                return "yellow_" + card.getNumber();
             case "Green":
-                return "green_" + String.valueOf(card.getNumber());
+                return "green_" + card.getNumber();
             default:
-                return "red_" + String.valueOf(card.getNumber());
+                return "red_" + card.getNumber();
 
         }
     }
@@ -386,16 +399,16 @@ public class UnoFrame extends JFrame {
         for (Card card : currentPlayer.getPlayerHand()) {
             switch (card.getColour()) {
                 case "Blue":
-                    cardInHand.add("blue_" + String.valueOf(card.getNumber()));
+                    cardInHand.add("blue_" + card.getNumber());
                     break;
                 case "Green":
-                    cardInHand.add("green_" + String.valueOf(card.getNumber()));
+                    cardInHand.add("green_" + card.getNumber());
                     break;
                 case "Yellow":
-                    cardInHand.add("yellow_" + String.valueOf(card.getNumber()));
+                    cardInHand.add("yellow_" + card.getNumber());
                     break;
                 default:
-                    cardInHand.add("red_" + String.valueOf(card.getNumber()));
+                    cardInHand.add("red_" + card.getNumber());
                     break;
             }
         }

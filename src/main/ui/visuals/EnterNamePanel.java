@@ -19,12 +19,12 @@ public class EnterNamePanel extends JPanel {
     //this should call to messages panel which will then say "nice to meet you, __!"
 
     private static final String addNameString = "Set Name";
-    private JButton nameButton;
+    private final JButton nameButton;
     private JPanel buttonPane;
-    private JTextField playerNameField;
-    private boolean alreadyEnabled = false;
+    private final JTextField playerNameField;
+    private final boolean alreadyEnabled = false;
 
-    private UnoFrame unoFrame;
+    private final UnoFrame unoFrame;
 
     public EnterNamePanel(UnoFrame unoFrame) {
         super(new BorderLayout());
@@ -75,7 +75,7 @@ public class EnterNamePanel extends JPanel {
     //This listener is shared by the text field and the hire button.
     class AddName implements ActionListener, DocumentListener {
         private boolean alreadyEnabled = false;
-        private JButton button;
+        private final JButton button;
 
         public AddName(JButton button) {
             this.button = button;

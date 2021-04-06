@@ -32,7 +32,7 @@ public class OptionsMenuPanel extends JPanel implements ActionListener {
     protected JButton discardButton;
     protected JButton endButton;
     protected JLabel titleText;
-    private UnoFrame unoFrame;
+    private final UnoFrame unoFrame;
 
 
     public OptionsMenuPanel(UnoFrame unoFrame) {
@@ -114,7 +114,7 @@ public class OptionsMenuPanel extends JPanel implements ActionListener {
         ImageIcon icon = createImageIcon("images/" + unoFrame.getCorrespondingCardImageName(card) + ".png");
         JOptionPane.showMessageDialog(unoFrame,
                 "Wow, " + unoFrame.getPlayerName() + "! You drew a "
-                        + card.getColour() + " " + String.valueOf(card.getNumber()) + "!",
+                        + card.getColour() + " " + card.getNumber() + "!",
                 "Card drawn",
                 JOptionPane.INFORMATION_MESSAGE,
                 icon);

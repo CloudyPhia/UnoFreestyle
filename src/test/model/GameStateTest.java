@@ -1,12 +1,15 @@
 package model;
 
 
+import exceptions.IllegalNumberException;
+import exceptions.IncorrectColourException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 //Tests for GameState class. Note that most of the methods are adequately tested in the JsonTest class.
 
@@ -28,7 +31,15 @@ public class GameStateTest {
         player3 = new Player("tester3");
         player4 = new Player("tester4");
 
-        testCard = new Card("Yellow", 0);
+        try {
+            testCard = new Card("Yellow", 0);
+        } catch (IllegalNumberException e) {
+            testCard = null;
+            fail("IllegalNumberException thrown.");
+        } catch (IncorrectColourException e) {
+            testCard = null;
+            fail("IncorrectColourExcception thrown.");
+        }
     }
 
     @Test

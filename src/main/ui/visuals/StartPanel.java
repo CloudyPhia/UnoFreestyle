@@ -28,7 +28,7 @@ public class StartPanel extends JPanel implements ActionListener {
     protected JButton loadButton;
     protected JLabel titleText;
 
-    private UnoFrame unoFrame;
+    private final UnoFrame unoFrame;
 
 
     public StartPanel(UnoFrame unoFrame) {

@@ -38,4 +38,22 @@ I'm playing with and what cards they currently have in their hand)
 - Player amount selection (ability to choose between 2-4 players)
 - Only discarding cards that are of the same colour and/or number
 - Specialty Cards (wild, reverse, + 2, etc.)
-- Adding the ability to say "Uno!" when only one card remains
+
+## Phase 4: Task 2
+I have decided to implement the option of making a class robust. I've made
+my Card class (in the model package) robust, with two exceptions being thrown -
+an IllegalNumberException, and an IncorrectColourException. These exceptions are
+caught in the drawFromDeck method in the unoFrame class, and prevent a card from
+being generated with a number not in the range of [0, 9] or with a colour outside of
+blue, green, yellow, or red. 
+
+## Phase 4: Task 3
+If I had more time to work on the project, I don't believe I'd make any significant 
+refactoring changes. Personally, it makes sense to me to have all the classes as they are.
+While it might look like there are a billion Panel classes, they each serve a significant 
+purpose and having them all in one class would make it extremely hard to read and also
+more difficult to deal with if I wanted to make changes in the future. I think also my 3
+core classes in the model package are great as they are - they work well, and having my players 
+separate from their cards added to a gamestate works logically. I think if I make some improvements
+to include multiple players in the future this UML diagram will change, but I think as it is now
+it makes sense! :)

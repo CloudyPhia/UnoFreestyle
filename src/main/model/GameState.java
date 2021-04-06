@@ -16,8 +16,8 @@ import java.util.List;
  */
 
 public class GameState implements Writeable {
-    private String name;
-    private List<Player> currentPlayers;
+    private final String name;
+    private final List<Player> currentPlayers;
 
     // EFFECTS: constructs gamestate with a name and empty list of players
     public GameState(String name) {

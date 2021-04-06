@@ -1,5 +1,7 @@
 package persistence;
 
+import exceptions.IllegalNumberException;
+import exceptions.IncorrectColourException;
 import model.Card;
 import model.GameState;
 import model.Player;
@@ -47,7 +49,15 @@ public class JsonTest {
          player3 = new Player("tester3");
          player4 = new Player("tester4");
 
-         testCard = new Card("Yellow", 0);
+        try {
+            testCard = new Card("Yellow", 0);
+        } catch (IllegalNumberException e) {
+            testCard = null;
+            fail("IllegalNumberException thrown.");
+        } catch (IncorrectColourException e) {
+            testCard = null;
+            fail("IncorrectColourExcception thrown.");
+        }
 
     }
 

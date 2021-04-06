@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.IllegalNumberException;
+import exceptions.IncorrectColourException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,20 +25,26 @@ public class PlayerTest {
     private Card testCard6;
     private Card testCard7;
 
-    private static int STARTING_CARD_AMOUNT = 7;
+    private static final int STARTING_CARD_AMOUNT = 7;
 
 
     @BeforeEach
     public void setUpPlayerTest() {
         testPlayerMultipleSameCards = new Player("Player1");
 
-        testCard1 = new Card("Yellow", 0);
-        testCard2 = new Card("Red", 1);
-        testCard3 = new Card("Green", 2);
-        testCard4 = new Card("Blue", 3);
-        testCard5 = new Card("Yellow", 4);
-        testCard6 = new Card("Red", 5);
-        testCard7 = new Card("Green", 6);
+        try {
+            testCard1 = new Card("Yellow", 0);
+            testCard2 = new Card("Red", 1);
+            testCard3 = new Card("Green", 2);
+            testCard4 = new Card("Blue", 3);
+            testCard5 = new Card("Yellow", 4);
+            testCard6 = new Card("Red", 5);
+            testCard7 = new Card("Green", 6);
+        } catch (IllegalNumberException e) {
+            fail("IllegalNumberException thrown.");
+        } catch (IncorrectColourException e) {
+            fail("IncorrectColourExcception thrown.");
+        }
 
         for (int i = 0; i <= 6; i ++) {
             testPlayerMultipleSameCards.addCardToHand(testCard1);
@@ -122,7 +130,14 @@ public class PlayerTest {
 
     @Test
     public void testPlayerDraw () {
-        Card testCardDraw = new Card("Blue", 3);
+        Card testCardDraw = null;
+        try {
+            testCardDraw = new Card("Blue", 3);
+        } catch (IllegalNumberException e) {
+            fail("IllegalNumberException thrown.");
+        } catch (IncorrectColourException e) {
+            fail("IncorrectColourException thrown.");
+        }
 
         testPlayerMultipleSameCards.addCardToHand(testCardDraw);
 
