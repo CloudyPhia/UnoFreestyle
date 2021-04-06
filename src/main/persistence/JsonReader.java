@@ -98,10 +98,8 @@ public class JsonReader {
         try {
             card = new Card(colour, number);
         } catch (IllegalNumberException e) {
-            card = null;
             System.out.println("IllegalNumberException thrown.");
         } catch (IncorrectColourException e) {
-            card = null;
             System.out.println("IncorrectColourException thrown.");
         }
 

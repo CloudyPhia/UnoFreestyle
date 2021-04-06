@@ -50,9 +50,21 @@ public class CardTest {
     }
 
     @Test
-    public void testNumberException() {
+    public void testNumberHigherException() {
         try {
             testCard1 = new Card("Red", 59);
+            fail("Exception should've been thrown");
+        } catch (IncorrectColourException e) {
+            fail("Exception caught when not expected (incorrect colour exception)");
+        } catch (IllegalNumberException e) {
+            //do nothing
+        }
+    }
+
+    @Test
+    public void testNumberLowerException() {
+        try {
+            testCard1 = new Card("Red", -1);
             fail("Exception should've been thrown");
         } catch (IncorrectColourException e) {
             fail("Exception caught when not expected (incorrect colour exception)");
