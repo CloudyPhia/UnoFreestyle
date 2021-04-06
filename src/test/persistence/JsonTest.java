@@ -93,6 +93,153 @@ public class JsonTest {
         }
     }
 
+    @Test
+    public void testTwoPlayersIllegalNumberCards() {
+        try {
+            player1.addCardToHand(testCard);
+            player1.addCardToHand(new Card("Red", -1));
+            fail("Should've thrown IllegalNumberException");
+        } catch (IllegalNumberException e) {
+            //do nothing
+        } catch (IncorrectColourException e) {
+            fail("Shouldn't have thrown IncorrectColourException");
+        }
+
+        for (int in = 0; in < 7; in++) {
+            player2.addCardToHand(testCard);
+        }
+
+        try {
+            player2.addCardToHand(new Card("Blue", 10));
+            fail("Should've thrown IllegalNumberException");
+        } catch (IllegalNumberException e) {
+            //do nothing
+        } catch (IncorrectColourException e) {
+            fail("Shouldn't have thrown IncorrectColourException");
+        }
+
+        gs.addPlayer(player1);
+        gs.addPlayer(player2);
+
+        try {
+            writer.open();
+            writer.write(gs);
+            writer.close();
+
+            gs = reader.read();
+            assertEquals("My game state", gs.getName());
+
+            List<Player> currentPlayers = gs.getCurrentPlayers();
+            assertEquals(2, gs.numCurrentPlayers());
+
+            assertEquals(player1.getPlayerHandSize(), 1);
+            assertEquals(player2.getPlayerHandSize(), 7);
+
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+
+    }
+
+
+    @Test
+    public void testTwoPlayersIllegalColourCards() {
+        try {
+            player1.addCardToHand(testCard);
+            player1.addCardToHand(testCard);
+            player1.addCardToHand(new Card("Orange", 5));
+            fail("Should've thrown IncorrectColourException");
+        } catch (IllegalNumberException e) {
+            fail("Shouldn't have thrown IllegalNumberException");
+        } catch (IncorrectColourException e) {
+            //do nothing
+        }
+
+        for (int in = 0; in < 5; in++) {
+            player2.addCardToHand(testCard);
+        }
+
+        try {
+            player2.addCardToHand(new Card("Rainbow", 7));
+            fail("Should've thrown IncorrectColourException");
+        } catch (IllegalNumberException e) {
+            fail("Shouldn't have thrown IllegalNumberException");
+        } catch (IncorrectColourException e) {
+            //do nothing
+        }
+
+        gs.addPlayer(player1);
+        gs.addPlayer(player2);
+
+        try {
+            writer.open();
+            writer.write(gs);
+            writer.close();
+
+            gs = reader.read();
+            assertEquals("My game state", gs.getName());
+
+            List<Player> currentPlayers = gs.getCurrentPlayers();
+            assertEquals(2, gs.numCurrentPlayers());
+
+            assertEquals(player1.getPlayerHandSize(), 2);
+            assertEquals(player2.getPlayerHandSize(), 5);
+
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+
+    }
+
+    @Test
+    public void testTwoPlayersIllegalColourAndNumberCards() {
+        try {
+            player1.addCardToHand(testCard);
+            player1.addCardToHand(new Card("Purple", -5));
+            fail("Should've thrown IllegalNumberException");
+        } catch (IllegalNumberException e) {
+            //do nothing
+        } catch (IncorrectColourException e) {
+            fail("Should've thrown IllegalNumberException first");
+        }
+
+        for (int in = 0; in < 9; in++) {
+            player2.addCardToHand(testCard);
+        }
+
+        try {
+            player2.addCardToHand(new Card("Pink", 25));
+            fail("Should've thrown IllegalNumberException");
+        } catch (IllegalNumberException e) {
+            //do nothing
+        } catch (IncorrectColourException e) {
+            fail("Should've thrown IllegalNumberException first");
+        }
+
+        gs.addPlayer(player1);
+        gs.addPlayer(player2);
+
+        try {
+            writer.open();
+            writer.write(gs);
+            writer.close();
+
+            gs = reader.read();
+            assertEquals("My game state", gs.getName());
+
+            List<Player> currentPlayers = gs.getCurrentPlayers();
+            assertEquals(2, gs.numCurrentPlayers());
+
+            assertEquals(player1.getPlayerHandSize(), 1);
+            assertEquals(player2.getPlayerHandSize(), 9);
+
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+
+    }
+
+
 
     @Test
     public void testTwoPlayersFullCards() {
