@@ -94,16 +94,14 @@ public class JsonReader {
     private void addCard(Player player, JSONObject jsonObject) {
         String colour = jsonObject.getString("colour");
         Integer number = jsonObject.getInt("number");
-        Card card = null;
         try {
-            card = new Card(colour, number);
+            Card card = new Card(colour, number);
+            player.addCardToHand(card);
         } catch (IllegalNumberException e) {
             System.out.println("IllegalNumberException thrown.");
         } catch (IncorrectColourException e) {
             System.out.println("IncorrectColourException thrown.");
         }
-
-        player.addCardToHand(card);
 
     }
 
