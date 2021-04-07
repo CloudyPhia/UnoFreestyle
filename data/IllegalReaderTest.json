@@ -1,0 +1,39 @@
+{
+    "name": "My game state",
+    "currentPlayers": [
+        {
+            "cards": [
+              {
+                "number": -1,
+                "colour": "Yellow"
+              },
+              {
+                "number": 9,
+                "colour": "Yellow"
+              }
+            ],
+            "name": "illegalTester1"
+        },
+        {
+            "cards": [
+                {
+                    "number": 5,
+                    "colour": "Yellow"
+                },
+                {
+                    "number": 0,
+                    "colour": "Rainbow"
+                },
+                {
+                    "number": 24,
+                    "colour": "Orange"
+                },
+                {
+                    "number": 9,
+                    "colour": "Yellow"
+                }
+            ],
+            "name": "illegalTester2"
+        }
+    ]
+}

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,6 +45,7 @@ public class JsonTest {
          writer = new JsonWriter("./data/ReaderTest.json");
          reader = new JsonReader("./data/ReaderTest.json");
 
+
          player1 = new Player("tester1");
          player2 = new Player("tester2");
          player3 = new Player("tester3");
@@ -52,11 +54,9 @@ public class JsonTest {
         try {
             testCard = new Card("Yellow", 0);
         } catch (IllegalNumberException e) {
-            testCard = null;
             fail("IllegalNumberException thrown.");
         } catch (IncorrectColourException e) {
-            testCard = null;
-            fail("IncorrectColourExcception thrown.");
+            fail("IncorrectColourException thrown.");
         }
 
     }
@@ -81,6 +81,38 @@ public class JsonTest {
             // pass
         }
     }
+
+    @Test
+    public void testReaderIllegalState() {
+        JsonReader illegalReader = new JsonReader("./data/IllegalReaderTest.json");
+
+
+        try {
+
+            gs = illegalReader.read();
+
+            List<Player> playerList = gs.getCurrentPlayers();
+
+            Player illegalPlayer1 = playerList.get(0);
+            Player illegalPlayer2 = playerList.get(1);
+
+            assertEquals("My game state", gs.getName());
+
+            List<Player> currentPlayers = gs.getCurrentPlayers();
+            assertEquals(2, gs.numCurrentPlayers());
+
+            assertEquals(1, illegalPlayer1.getPlayerHandSize());
+            assertEquals(2, illegalPlayer2.getPlayerHandSize());
+
+
+        } catch (IOException e) {
+            fail("No exception should be thrown");
+        }
+    }
+
+
+
+
 
     @Test
     public void testWriterNoFile() {
